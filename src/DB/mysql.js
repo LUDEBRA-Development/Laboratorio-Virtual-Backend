@@ -77,22 +77,15 @@ function getById(table, id){
         });
     });
 }
-
 function add(table, data){
     return new Promise((resolve, reject) => {
-        connection.query(`INSERT INTO ${table} SET ?`,data, (err, result) => {
+        connection.query(`INSERT INTO ${table} SET ? ON DUPLICATE KEY UPDATE ?`,[data, data], (err, result) => {
         return err ?  reject(err) :  resolve(result);
         });
     });
 }
+ 
 
-function update(table, data, condition) {   
-    return new Promise((resolve, reject) => {
-    connection.query(`UPDATE ${table} SET ? WHERE Identification = ?`,[data,condition], (err, result)=>{
-        return err ?  reject(err) :  resolve(result);
-    })
-    });
-}
 
 function remove(table, data) {
     return new Promise((resolve, reject) => {
@@ -117,5 +110,4 @@ module.exports = {
     getById,
     add,
     remove,
-    update,
 }

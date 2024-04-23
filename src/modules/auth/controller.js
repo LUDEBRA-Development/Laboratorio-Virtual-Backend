@@ -1,8 +1,8 @@
 const db = require ('../../DB/mysql')
-const table = 'students'
+const table = 'access'
 
-function add(body){
-    return db.add(table, body);
+function add(data){
+    return db.add(table, data);
 }
 
 

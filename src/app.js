@@ -1,7 +1,7 @@
 const express = require ('express');
 const morgan = require('morgan');
 const config = require ('./config');
-const students = require('./modules/students/routes');
+const users = require('./modules/UsersApi/routes');
 const  error  = require('./red/errors');
 const app = express();
 
@@ -15,7 +15,7 @@ app.set('port', config.app.port);
 
 
 //routes
-app.use('/api/students',students);
+app.use('/api/users',users);
 
 
 app.use(error); 

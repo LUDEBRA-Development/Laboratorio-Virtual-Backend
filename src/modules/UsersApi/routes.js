@@ -33,19 +33,11 @@ routes.put('/', async (req, res, next)=>{
 routes.post('/', async (req, res, next)=>{
     try{
         const items = await controller.add(req.body);
-        response.success(req, res, "item successfully add", 200);
+        response.success(req, res, "Operation completed successfully", 200);
     }catch(err){
         next(err)
     }
 })
 
-routes.post('/:id', async (req, res, next)=>{
-    try{
-        const items = await controller.update(req.body, req.params.id);
-        response.success(req, res, "Item successfully updated", 200);
-    }catch(err){
-        next(err)
-    }
-})
 
 module.exports =routes; 

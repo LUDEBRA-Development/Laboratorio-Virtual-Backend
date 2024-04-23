@@ -16,14 +16,9 @@ function add(body){
     return db.add(table, body);
 }
 
-function update(body, id){
-    return db.update(table, body, id);
-}
-
 module.exports ={
     getAll,
     getById,
     remove, 
     add, 
-    update,
 }
