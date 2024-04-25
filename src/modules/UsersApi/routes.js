@@ -30,7 +30,16 @@ routes.put('/', async (req, res, next)=>{
     }
 })
 
-routes.post('/', async (req, res, next)=>{
+
+routes.post('/generate', async (req, res, next)=>{
+    try{
+        const items = await controller.generate(req.body);
+        response.success(req, res, "Operation completed successfully", 200);
+    }catch(err){
+        next(err)
+    }
+})
+routes.post('/validate', async (req, res, next)=>{
     try{
         const items = await controller.add(req.body);
         response.success(req, res, "Operation completed successfully", 200);

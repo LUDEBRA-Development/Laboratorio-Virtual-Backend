@@ -89,7 +89,7 @@ function add(table, data){
 
 function remove(table, data) {
     return new Promise((resolve, reject) => {
-        connection.query('DELETE FROM ?? WHERE Identification = ?', [table, data.id], (err, result) => {
+        connection.query('DELETE FROM ?? WHERE Email = ?', [table, data.Email], (err, result) => {
             if (err) {
                 reject(err);
             } else {
