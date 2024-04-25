@@ -103,11 +103,28 @@ function remove(table, data) {
         });
     });
 }
-
+function query(table, query){
+    return new Promise((resolve, reject)=>{
+        connection.query(`SELECT * FROM ${table} WHERE ?`, query, (err, result)=>{
+            if (err) {
+                reject(err);
+            } else {
+                if (result.length > 0) {
+                    resolve(result[0]);
+                } else {
+                    const error = new Error();
+                    reject(error);
+                }
+            }
+        });
+    });
+}
+ 
 
 module.exports = {
     getAll,
     getById,
     add,
     remove,
+    query,
 }

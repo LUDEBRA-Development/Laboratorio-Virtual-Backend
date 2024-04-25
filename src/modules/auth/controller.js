@@ -1,12 +1,29 @@
 const db = require ('../../DB/mysql')
+const bcrypt = require("bcrypt"); 
+const auth = require('../../authentication/index')
 const table = 'access'
 
-function add(data){
+async function add(data){
+    if(data){
+        data.Password =await bcrypt.hash(data.Password.toString(), 5);  
+    }
     return db.add(table, data);
+}
+async function login(email, password){
+    const data = await db.query(table, {email_User : email});
+
+    return bcrypt.compare(password,data.password)
+        .then(result =>{
+            return auth.assignToken({...data})
+        })
+        .catch(err =>{
+            throw new Error("Invalid information"); 
+        })
 }
 
 
 
 module.exports ={
     add, 
+    login, 
 }
