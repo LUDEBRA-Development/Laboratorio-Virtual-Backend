@@ -68,8 +68,18 @@ async function sendValidationEmail(email, validateCode) {
     const mailOptions = {
         from: 'luisalbertovega@unicesar.edu.co',
         to: email,
-        subject: 'Código de validación',
-        text: `Tu código de validación es: ${validateCode}`
+        subject: 'Te ayudamos a completar Tu Verificación',
+        html: `
+        <div>
+            <p>Hola,</p>
+            <p>Gracias por registrarte.</p>
+            <p>Tu código de validación es: <strong>${validateCode}</strong></p>
+            <p>Este código es necesario para completar el proceso de registro en nuestro sitio. Por favor, ingrésalo en la pagina web  para verificar tu correo electrónico y completar tu registro.</p>
+            <p>Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos.</p>
+            <img src="http://imgfz.com/i/ClvOJ61.png" alt="Logo">
+            <p>Saludos cordiales,<br>LUDEBRA LAB </p>
+        </div>
+    `       
     };
     await transporter.sendMail(mailOptions);
 }
