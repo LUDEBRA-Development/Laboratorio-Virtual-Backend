@@ -45,9 +45,9 @@ async function add(body){
             if(body.Password || body.Email){
                 await auth.add({
                     email_User : body.Email,
-                    Creation_date : dateNow,
-                    Expiration_date : expirationDate,
-                    Password: body.Password
+                    Password: body.Password,
+                    rol: 1,
+                    statu: 1
                 })
             }
         }
@@ -77,7 +77,7 @@ async function sendValidationEmail(email, validateCode) {
             <p>Este código es necesario para completar el proceso de registro en nuestro sitio. Por favor, ingrésalo en la pagina web  para verificar tu correo electrónico y completar tu registro.</p>
             <p>Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos.</p>
             <img src="http://imgfz.com/i/ClvOJ61.png" alt="Logo">
-            <p>Saludos cordiales,<br>LUDEBRA LAB </p>
+            <p>Saludos cordiales,<br>LUDEBRA LABS </p>
         </div>
     `       
     };
