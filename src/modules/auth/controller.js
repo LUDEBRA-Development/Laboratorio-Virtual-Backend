@@ -7,7 +7,7 @@ const table = 'access'
 
 async function add(data){
     if(data){
-        data.Password =await bcrypt.hash(data.Password.toString(), 5);  
+        data.password =await bcrypt.hash(data.password.toString(), 5);  
     }
     return db.add(table, data);
 }

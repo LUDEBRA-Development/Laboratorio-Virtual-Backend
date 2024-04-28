@@ -63,7 +63,7 @@ function getAll(table){
 }
 function getById(table, id){
     return new Promise((resolve, reject)=>{
-        connection.query(`SELECT * FROM ${table} WHERE Identification = ?`, id, (err, result)=>{
+        connection.query(`SELECT * FROM ${table} WHERE Email = ?`, id, (err, result)=>{
             if (err) {
                 reject(err);
             } else {

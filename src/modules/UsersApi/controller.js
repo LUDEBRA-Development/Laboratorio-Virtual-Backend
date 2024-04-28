@@ -38,23 +38,41 @@ async function add(body){
         }
         const cachedCode = validationCache.get(user.Email);
         if(body.validationCode === cachedCode && cachedCode){
-            await db.add(table, user)
-            const dateNow= new Date()
-            const expirationDate = new Date(dateNow.getTime() + 3600000); // 1 hour
-        
-            if(body.Password || body.Email){
-                await auth.add({
-                    email_User : body.Email,
-                    Password: body.Password,
-                    rol: 1,
-                    statu: 1
-                })
+            nextAdd(user,body); 
+        }
+        else{
+            if(body.decode === 1){
+                nextAdd(user,body); 
+            } else{
+                const items = await getById(body.Email);
+                await db.add(table, user) 
+                if(body.Password || body.Email){
+                    await auth.add({
+                        email_User : body.Email,
+                        password: body.Password,
+                        rol: 2,
+                        statu: body.statu || 1
+                    })
+                }else{
+                    new Error(); 
+                }
             }
         }
+} 
 
-/*     }else{
-        throw new Error()
-    } */
+
+async function nextAdd(user, body){
+    await db.add(table, user)      
+    if(body.Password || body.Email){
+        await auth.add({
+            email_User : body.Email,
+            password: body.Password,
+            rol: body.rol || 2,
+            statu: body.statu || 1
+        })
+    }else{
+        new Error(); 
+    }
 }
 
 async function sendValidationEmail(email, validateCode) {
