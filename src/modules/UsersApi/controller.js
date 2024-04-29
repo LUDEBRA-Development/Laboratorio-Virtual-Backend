@@ -38,43 +38,57 @@ async function add(body){
         }
         const cachedCode = validationCache.get(user.Email);
         if(body.validationCode === cachedCode && cachedCode){
-            nextAdd(user,body); 
+            await db.add(table, user)      
+            if(body.Password || body.Email){
+                await auth.add({
+                    email_User : body.Email,
+                    password: body.Password,
+                    rol: body.rol || 2,
+                    statu: body.statu || 1
+                })
+            }else{
+                new Error(); 
+            }
         }
         else{
-            if(body.decode === 1){
-                nextAdd(user,body); 
-            } else{
-                const items = await getById(body.Email);
-                await db.add(table, user) 
-                if(body.Password || body.Email){
-                    await auth.add({
-                        email_User : body.Email,
-                        password: body.Password,
-                        rol: 2,
-                        statu: body.statu || 1
-                    })
-                }else{
-                    new Error(); 
-                }
-            }
+            new Error(); 
         }
 } 
 
+async function update(body, Email, rolUser){
+    const user = {
+        First_Name: body.First_Name,
+        Second_Name:body.Second_Name,
+    };
 
-async function nextAdd(user, body){
-    await db.add(table, user)      
-    if(body.Password || body.Email){
-        await auth.add({
-            email_User : body.Email,
-            password: body.Password,
-            rol: body.rol || 2,
-            statu: body.statu || 1
-        })
+    if(rolUser === '1'){ //ifAdmin
+        const item = await auth.getById(Email); 
+        const access = {
+            email_User: body.Email || item[0].email_User,
+            password : body.Password || item[0].password,
+            rol : body.rol || item[0].rol,
+            statu : body.statu || item[0].statu,
+        };
+            await db.update(table,user,{Email : Email});  
+            if(body.Email || body.Password){
+                await auth.update(access, {email_User : body.Email});
+            }
     }else{
-        new Error(); 
+        if(body.First_Name || body.Second_Name){
+            await db.update(table,user,{Email : Email});
+        }
+        const cachedCode = validationCache.get(body.Email);
+        if((body.validationCode === cachedCode && cachedCode)){ //ifUserNormal
+            const accessUser = {
+                email_User: body.Email,
+                password : body.Password,
+                rol : item[0].rol,
+                statu : item[0].statu,
+            };
+            await auth.update(accessUser, {email_User : access.email_User});
+        }
     }
 }
-
 async function sendValidationEmail(email, validateCode) {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -111,4 +125,5 @@ module.exports ={
     remove, 
     add, 
     generate, 
+    update,
 }

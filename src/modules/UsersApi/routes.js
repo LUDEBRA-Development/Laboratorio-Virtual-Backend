@@ -13,7 +13,7 @@ routes.get('/', async (req, res, next)=>{
     }
 })
 
-routes.get('/:id', async (req, res, next)=>{
+routes.get('/:id',security() , async (req, res, next)=>{
     try{
         const items = await controller.getById(req.params.id);
         response.success(req, res, items, 200);
@@ -22,7 +22,7 @@ routes.get('/:id', async (req, res, next)=>{
     }
 })
 
-routes.put('/', async (req, res, next)=>{
+routes.put('/',security(), async (req, res, next)=>{
     try{
         await controller.remove(req.body);
         response.success(req, res, "item successfully removed", 200);
@@ -32,7 +32,7 @@ routes.put('/', async (req, res, next)=>{
 })
 
 
-routes.post('/generate', async (req, res, next)=>{
+routes.post('/generate',security(), async (req, res, next)=>{
     try{
         const items = await controller.generate(req.body);
         response.success(req, res, "Operation completed successfully", 200);
@@ -40,10 +40,18 @@ routes.post('/generate', async (req, res, next)=>{
         next(err)
     }
 })
-routes.post('/validate',security(), async (req, res, next)=>{
+routes.post('/validate',security() ,async (req, res, next)=>{
     try{
         const items = await controller.add(req.body);
         response.success(req, res, "Operation completed successfully", 200);
+    }catch(err){
+        next(err)
+    }
+})
+routes.post('/:id',security() ,async (req, res, next)=>{
+    try{
+        const items = await controller.update(req.body, req.params.id, req.decode);
+        response.success(req, res, "Item successfully updated", 200);
     }catch(err){
         next(err)
     }

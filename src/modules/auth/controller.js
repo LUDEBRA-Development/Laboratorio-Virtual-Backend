@@ -11,6 +11,15 @@ async function add(data){
     }
     return db.add(table, data);
 }
+function getById(id){
+    return db.getById(table, {email_User : id});
+}
+async function update(data, condition){
+    if(data){
+        data.password =await bcrypt.hash(data.password.toString(), 5);  
+    }
+    return db.update(table, data, condition);
+}
 async function login(email, password){
   //  if(authMail.validateMail(email)){ 
         const user = {
@@ -35,4 +44,6 @@ async function login(email, password){
 module.exports ={
     add, 
     login, 
+    update,
+    getById,
 }

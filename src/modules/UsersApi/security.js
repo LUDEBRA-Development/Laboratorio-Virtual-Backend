@@ -9,9 +9,10 @@ module.exports= function(){
                 req.decode = userRole; 
                 next(); 
             } else {
-                if (decoded.rol === '2' || decoded.rol === '3') { //is teacher
+                if (decoded.rol === '2' || decoded.rol === '3') {
                     const userMailFromRequest = req.body.Email; 
                     if (userMailFromToken === userMailFromRequest) {
+                        req.decode = '0'
                         next();
                     } else {
                         const error = new Error('Unauthorized access');
