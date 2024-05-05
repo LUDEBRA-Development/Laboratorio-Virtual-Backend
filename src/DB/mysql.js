@@ -153,6 +153,9 @@ function getById(table, id){
         });
     });
 }
+function prueba(){
+
+}
 module.exports = {
     getAll,
     getById,
