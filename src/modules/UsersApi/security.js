@@ -5,7 +5,7 @@ module.exports= function(){
             const decoded = auth.tokenCheck.confirmToken(req); 
             const userRole = decoded.rol;
             const userMailFromToken = decoded.email_User;
-             if (decoded.rol === '1') { 
+            if (decoded.rol === '1') { 
                 req.decode = userRole; 
                 next(); 
             } else {

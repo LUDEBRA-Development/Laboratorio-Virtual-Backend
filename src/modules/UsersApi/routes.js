@@ -32,7 +32,7 @@ routes.put('/',security(), async (req, res, next)=>{
 })
 
 
-routes.post('/generate',security(), async (req, res, next)=>{
+routes.post('/generate', async (req, res, next)=>{
     try{
         const items = await controller.generate(req.body);
         response.success(req, res, "Operation completed successfully", 200);
@@ -40,7 +40,7 @@ routes.post('/generate',security(), async (req, res, next)=>{
         next(err)
     }
 })
-routes.post('/validate',security() ,async (req, res, next)=>{
+routes.post('/validate',async (req, res, next)=>{
     try{
         const items = await controller.add(req.body);
         response.success(req, res, "Operation completed successfully", 200);
