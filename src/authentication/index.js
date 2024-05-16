@@ -17,7 +17,7 @@ const tokenCheck = {
 
 function getToken(authorization){
     if(!authorization){
-        throw new Error("NO TOKEN");
+        return null; 
     }
     if(authorization.indexOf('Bearer')=== -1 ){
         throw new Error('Formato invalido');
@@ -30,6 +30,9 @@ function getToken(authorization){
 function decodeHeader(req){
     const authorization= req.headers.authorization || '';
     const token = getToken(authorization);
+    if (!token) {
+        return null;
+    }
     const verify = verifyToken(token); 
     const decode = jsonWebToken.decode(token);
     return decode; 

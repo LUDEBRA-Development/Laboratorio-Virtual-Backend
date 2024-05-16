@@ -2,7 +2,7 @@ const express = require('express');
 const routes = express.Router();
 const response = require('../../red/response')
 const controller = require('./controller');
-const security = require('./security')
+const security = require('../security');
 
 routes.get('/', async (req, res, next)=>{
     try{

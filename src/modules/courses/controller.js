@@ -5,7 +5,7 @@ function getAll(){
 }
 
 function getById(id){
-    return db.getById(table, id);
+    return db.getById(table, {Id_course : id});
 }
 
 function remove(body){

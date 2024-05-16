@@ -3,6 +3,7 @@ const routes = express.Router();
 const response = require('../../red/response')
 const controller = require('./controller');
 const security = require('./security');
+const securityAdd = require ('./securityAdd'); 
 
 routes.get('/', async (req, res, next)=>{
     try{
@@ -40,7 +41,7 @@ routes.post('/generate', async (req, res, next)=>{
         next(err)
     }
 })
-routes.post('/validate',async (req, res, next)=>{
+routes.post('/validate',securityAdd(),async (req, res, next)=>{
     try{
         const items = await controller.add(req.body);
         response.success(req, res, "Operation completed successfully", 200);

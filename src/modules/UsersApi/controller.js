@@ -1,5 +1,6 @@
 const db = require ('../../DB/mysql'); 
 const auth = require('../auth/controller');
+const userCourse = require('../courses/cousesUsers/Controller')
 const authMail = require('../authMail'); 
 const nodemailer = require('nodemailer');
 const NodeCache = require("node-cache");
@@ -31,36 +32,38 @@ async function generate(body){
 }
 async function add(body){ 
    // if(authMail.validateMail(body.Email)){
-    //code teacher
+    //code teacher/ course
+    
         const user = {
             First_Name: body.First_Name,
             Second_Name:body.Second_Name ,
             Email: body.Email,
-        }
-        const rol = null; 
-        const cachedCode = validationCache.get(user.Email);
-        if(body.validationCode === cachedCode && cachedCode){
+        }      
+       // const cachedCode = validationCache.get(user.Email);
+       // if(body.validationCode === cachedCode && cachedCode){
             await db.add(table, user)      
             if(body.Password || body.Email){
-                codeTeacheDB= getCodeTeacher();
-                if(body.CodeTeacher && (body.CodeTeacher==codeTeacheDB)){
-                    rol = 3; 
-                }else{
-                    rol= 4; 
-                }
                 await auth.add({
                     email_User : body.Email,
                     password: body.Password,
-                    rol: rol || 4, //ojo con esto
+                    rol: body.rol, 
                     statu: body.statu || 1
                 })
+                if(body.Id_course){
+                    await userCourse.add({
+                        Email : body.Email,
+                        Id_course : body.Id_course
+                    })
+                }else{
+                    new Error(); 
+                }
             }else{
                 new Error(); 
-            }
-        }
+            } 
+/*         }
         else{
             new Error(); 
-        }
+        } */
 } 
 
 async function update(body, Email, rolUser){
