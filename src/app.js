@@ -10,10 +10,14 @@ const cors = require('cors');
 
 
 //Middleware
-app.use(cors())
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended : true})); 
+
+const corsOptions = {
+    origin : ['http://localhost:5173/fetch', ]
+}
+app.use(cors())
 
 app.set('port', config.app.port);
 
