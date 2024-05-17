@@ -32,8 +32,6 @@ async function generate(body){
 }
 async function add(body){ 
    // if(authMail.validateMail(body.Email)){
-    //code teacher/ course
-    
         const user = {
             First_Name: body.First_Name,
             Second_Name:body.Second_Name ,

@@ -6,8 +6,11 @@ const users = require('./modules/UsersApi/routes');
 const auth = require('./modules/auth/routes');
 const  error  = require('./red/errors');
 const app = express();
+const cors = require('cors'); 
+
 
 //Middleware
+app.use(cors())
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended : true})); 
