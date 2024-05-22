@@ -22,28 +22,11 @@ routes.get('/:id',  async (req, res, next)=>{
     }
 })
 
-routes.put('/',security(), async (req, res, next)=>{
-    try{
-        await controller.remove(req.body);
-        response.success(req, res, "item successfully removed", 200);
-    }catch(err){
-        next(err)
-    }
-})
 
 routes.post('/', security(), async (req, res, next)=>{
     try{
         const items = await controller.add(req.body);
         response.success(req, res, "item successfully add", 200);
-    }catch(err){
-        next(err)
-    }
-})
-
-routes.post('/:id',security(), async (req, res, next)=>{
-    try{
-        const items = await controller.update(req.body, req.params.id);
-        response.success(req, res, "Item successfully updated", 200);
     }catch(err){
         next(err)
     }

@@ -6,7 +6,7 @@ module.exports= function(){
             if(decoded){
                 const userRole = decoded.rol;
                 const userMailFromToken = decoded.email_User;
-                const userMailFromRequest = req.body.Email; 
+                const userMailFromRequest = req.params.id; 
                 if (userRole === '1') { 
                     req.decode = userRole; 
                     next(); 

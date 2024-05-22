@@ -4,6 +4,7 @@ const response = require('../../red/response')
 const controller = require('./controller');
 const security = require('./security');
 
+//get courses
 routes.get('/courses/:id',security(),  async (req, res, next)=>{
     try{
         const items = await controller.getCourse(req.params.id);
@@ -12,6 +13,7 @@ routes.get('/courses/:id',security(),  async (req, res, next)=>{
         next(err)
     }
 })
+//get task
 routes.get('/task/:id', async (req, res, next)=>{
     try{
         const items = await controller.getTasks(req.params.id);

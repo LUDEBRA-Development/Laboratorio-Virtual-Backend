@@ -26,10 +26,13 @@ async function login(email, password){
             email_User : email
         }
         const data = await db.query(table, user);
-
+        console.log(data.password)
         return bcrypt.compare(password,data.password)
             .then(result =>{
-                return auth.assignToken({...data})
+                if(result){
+                    return auth.assignToken({...data})
+                }
+                throw new Error("Invalid information"); 
             })
             .catch(err =>{
                 throw new Error("Invalid information"); 

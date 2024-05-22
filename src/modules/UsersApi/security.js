@@ -11,9 +11,8 @@ module.exports= function(){
                     req.decode = userRole; 
                     next(); 
                 } else {
-                    if (decoded.rol === '2' || decoded.rol === '3' || decoded.rol ==='4') {
+                    if (decoded.ro !== '1') {
                         if (userMailFromToken === userMailFromRequest) {
-                            req.decode = '0'
                             next();
                         } else {
                             const error = new Error('Unauthorized access');
