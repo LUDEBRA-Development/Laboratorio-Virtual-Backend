@@ -9,7 +9,7 @@ routes.post('/', async (req, res, next)=>{
         const items = await controller.file(req.files.image);
         response.success(req, res, items, 200);
     }catch(err){
-        next(err)
+        response.error(req, res, err, 500)
     }
 })
 
