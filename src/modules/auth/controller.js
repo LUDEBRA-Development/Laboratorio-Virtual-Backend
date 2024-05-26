@@ -26,7 +26,7 @@ async function login(email, password){
     const access = await db.query(table, {email_User : email});
     const data = {
         First_Name: user.First_Name,
-        Email: user.Email,
+        email_User: user.Email,
         Imagen : 'https://i.ibb.co/8j7yFGP/user-Login.png',
         rol : access.rol
     }

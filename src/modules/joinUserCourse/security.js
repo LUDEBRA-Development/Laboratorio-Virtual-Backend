@@ -3,6 +3,7 @@ module.exports= function(){
     function middleware(req,res, next ){
         try {
             const decoded = auth.tokenCheck.confirmToken(req); 
+            console.log(decoded.rol)
             if(decoded){
                 const userRole = decoded.rol;
                 const userMailFromToken = decoded.email_User;
@@ -16,13 +17,12 @@ module.exports= function(){
                             req.decode = '0'
                             next();
                         } else {
-                            const error = new Error('Unauthorized access');
+                            const error = new Error('Unauthorized');
                             error.status = 403;
                             next(error);
                         }
-
-
                     }else{
+s
                         const error = new Error('Unauthorized access');
                         error.statusCode = 403; 
                         throw error;
