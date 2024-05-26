@@ -6,12 +6,12 @@ module.exports= function(){
             if(decoded){
                 const userRole = decoded.rol;
                 const userMailFromToken = decoded.email_User;
-                const userMailFromRequest = req.body.Email; 
+                const userMailFromRequest = req.params.id; 
+                req.body.rol = userRole; 
                 if (userRole === '1') { 
-                    req.decode = userRole; 
                     next(); 
                 } else {
-                    if (decoded.ro !== '1') {
+                    if (userRole !== '1') {
                         if (userMailFromToken === userMailFromRequest) {
                             next();
                         } else {

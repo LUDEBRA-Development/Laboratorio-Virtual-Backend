@@ -51,7 +51,7 @@ routes.post('/validate',securityAdd(),async (req, res, next)=>{
 })
 routes.post('/:id',security() ,async (req, res, next)=>{
     try{
-        const items = await controller.update(req.body, req.params.id, req.decode);
+        const items = await controller.update(req.body,req.files.image,req.params.id);
         response.success(req, res, "Item successfully updated", 200);
     }catch(err){
         next(err)

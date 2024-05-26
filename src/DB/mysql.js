@@ -144,7 +144,7 @@ function getById(table, id){
                 reject(err);
             } else {
                 if (result.length > 0) {
-                    resolve(result);
+                    resolve(result[0]);
                 } else {
                     const error = new Error();
                     reject(error);

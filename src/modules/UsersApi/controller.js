@@ -3,7 +3,7 @@ const auth = require('../auth/controller');
 const userCourse = require('../courses/cousesUsers/Controller')
 const authMail = require('../authMail'); 
 const nodemailer = require('nodemailer');
-const uploadFile = require ('../file/controller')
+const fileOptions = require ('../file/controller')
 const NodeCache = require("node-cache");
 const table = 'Users'; 
 const validationCache = new NodeCache({ stdTTL: 600, checkperiod: 120 });
@@ -13,7 +13,7 @@ function getAll(){
 }
 
 function getById(id){
-    return db.getById(table, id);
+    return db.getById(table, {Email : id});
 }
 
 function remove(body){
@@ -36,7 +36,8 @@ async function add(body){
             First_Name: body.First_Name,
             Second_Name:body.Second_Name ,
             Email: body.Email,
-            Profile_Picture : 'https://res.cloudinary.com/dxtvgcwyq/image/upload/v1716706261/onmzvqqwjg1gwktyhcvy.png'
+            Profile_Picture : 'https://res.cloudinary.com/dxtvgcwyq/image/upload/v1716706261/onmzvqqwjg1gwktyhcvy.png',
+            Id_Profile : null
         }      
        const cachedCode = validationCache.get(user.Email);
        if(body.validationCode === cachedCode && cachedCode){
@@ -65,12 +66,15 @@ async function add(body){
         }
 } 
 
-async function update(body, Email, rolUser){
-    const [users] = getById(email); 
+async function update(body,file,Email){
+    let rolUser =body.rol; 
+    const users = await getById(Email); 
     const user = {
         First_Name: body.First_Name || users.First_Name,
         Second_Name:body.Second_Name || users.Second_Name,
-        Email: users.Email
+        Email: users.Email,
+        Profile_Picture : users.Profile_Picture,
+        Id_Profile : users.Id_Profile
     };
     if(rolUser === '1'){ //ifAdmin
         const item = await auth.getById(Email); 
@@ -100,7 +104,18 @@ async function update(body, Email, rolUser){
                 await auth.update(accessUser, {email_User : access.email_User});
             }
         }else{
-            if(body.First_Name || body.Second_Name){
+            if(body.First_Name || body.Second_Name || file){
+                let item; 
+                const folderSave = 'profile picture'; 
+                if(users.Id_Profile== null){ //add
+                    
+                    item = await fileOptions.add(file, folderSave); 
+                }
+                else{
+                    item =  await fileOptions.update(file, user.Id_Profile); 
+                } 
+                user.Profile_Picture= item.url; 
+                user.Id_Profile= item.public_id; 
                 await db.update(table,user,{Email : Email});
             }
         }
