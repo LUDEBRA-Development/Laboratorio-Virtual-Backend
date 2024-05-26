@@ -28,7 +28,7 @@ async function login(email, password){
         First_Name: user.First_Name,
         Email: user.Email,
         Imagen : 'https://i.ibb.co/8j7yFGP/user-Login.png',
-        Rol : access.rol
+        rol : access.rol
     }
     return bcrypt.compare(password,access.password)
         .then(result =>{

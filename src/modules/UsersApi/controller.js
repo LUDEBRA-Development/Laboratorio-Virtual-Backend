@@ -64,11 +64,12 @@ async function add(body){
 } 
 
 async function update(body, Email, rolUser){
+    const [users] = getById(email); 
     const user = {
-        First_Name: body.First_Name,
-        Second_Name:body.Second_Name,
+        First_Name: body.First_Name || users.First_Name,
+        Second_Name:body.Second_Name || users.Second_Name,
+        Email: users.Email
     };
-
     if(rolUser === '1'){ //ifAdmin
         const item = await auth.getById(Email); 
         const access = {
@@ -77,23 +78,29 @@ async function update(body, Email, rolUser){
             rol : body.rol || item[0].rol,
             statu : body.statu || item[0].statu,
         };
+
             await db.update(table,user,{Email : Email});  
             if(body.Email || body.Password){
                 await auth.update(access, {email_User : body.Email});
             }
     }else{
-        if(body.First_Name || body.Second_Name){
-            await db.update(table,user,{Email : Email});
-        }
-        const cachedCode = validationCache.get(body.Email);
-        if((body.validationCode === cachedCode && cachedCode)){ //ifUserNormal
-            const accessUser = {
-                email_User: body.Email,
-                password : body.Password,
-                rol : item[0].rol,
-                statu : item[0].statu,
-            };
-            await auth.update(accessUser, {email_User : access.email_User});
+        if(body.Email || body.password){
+            const cachedCode = validationCache.get(body.Email);
+            if((body.validationCode === cachedCode && cachedCode)){ //ifUserNormal
+                const accessUser = {
+                    email_User: body.Email,
+                    password : body.Password,
+                    rol : item[0].rol,
+                    statu : item[0].statu,
+                };
+                user.Email = Email || users.Email; 
+                await db.update(table,user, {Email : Email}); 
+                await auth.update(accessUser, {email_User : access.email_User});
+            }
+        }else{
+            if(body.First_Name || body.Second_Name){
+                await db.update(table,user,{Email : Email});
+            }
         }
     }
 }
