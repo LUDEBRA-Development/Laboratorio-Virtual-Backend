@@ -31,14 +31,13 @@ async function generate(body){
    // }
 }
 async function add(body){ 
-   // if(authMail.validateMail(body.Email)){
         const user = {
             First_Name: body.First_Name,
             Second_Name:body.Second_Name ,
             Email: body.Email,
         }      
-       // const cachedCode = validationCache.get(user.Email);
-       // if(body.validationCode === cachedCode && cachedCode){
+       const cachedCode = validationCache.get(user.Email);
+       if(body.validationCode === cachedCode && cachedCode){
             await db.add(table, user)      
             if(body.Password || body.Email){
                 await auth.add({
@@ -47,7 +46,7 @@ async function add(body){
                     rol: body.rol, 
                     statu: body.statu || 1
                 })
-                if(body.Id_course){
+                if(body.Id_course&&(authMail.validateMail(body.Email))){
                     await userCourse.add({
                         Email : body.Email,
                         Id_course : body.Id_course
@@ -58,10 +57,10 @@ async function add(body){
             }else{
                 new Error(); 
             } 
-/*         }
+         }
         else{
             new Error(); 
-        } */
+        }
 } 
 
 async function update(body, Email, rolUser){
