@@ -5,6 +5,7 @@ const courses = require ('./modules/courses/routes');
 const users = require('./modules/UsersApi/routes');
 const auth = require('./modules/auth/routes');
 const joinUserCourse = require('./modules/joinUserCourse/routes');
+const fileupload = require('express-fileupload'); 
 
 const  error  = require('./red/errors');
 const app = express();
@@ -15,7 +16,7 @@ const cors = require('cors');
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended : true})); 
-
+app.use(fileUpload({useTempFiles: true,}));
 const corsOptions = {
     origin : ['http://localhost:5173/fetch', ]
 }
