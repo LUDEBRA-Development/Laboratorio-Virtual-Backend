@@ -58,14 +58,7 @@ routes.post('/:id',security() ,async (req, res, next)=>{
     }
 })
 
-routes.post('/file', async (req, res, next)=>{
-    try{
-        const items = await controller.file(req.files.image);
-        response.success(req, res, "Operation completed successfully", 200);
-    }catch(err){
-        next(err)
-    }
-})
+
 
 
 module.exports =routes; 

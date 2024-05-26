@@ -4,7 +4,6 @@ const userCourse = require('../courses/cousesUsers/Controller')
 const authMail = require('../authMail'); 
 const nodemailer = require('nodemailer');
 const NodeCache = require("node-cache");
-const cloudinary = require('../../DB/cloudinary/config'); 
 const table = 'Users'; 
 const validationCache = new NodeCache({ stdTTL: 600, checkperiod: 120 });
 
@@ -135,18 +134,6 @@ async function sendValidationEmail(email, validateCode) {
 function generateValidationCode() {
     return Math.random().toString(36).substring(2, 8).toUpperCase(); 
 }
-async function file(file){
-    try {
-        const result = await cloudinary.uploader.upload(file.tempFilePath);
-        return {
-          success: true,
-          url: result.secure_url,
-          public_id: result.public_id,
-        };
-      } catch (error) {
-        throw new Error(error.message);
-      }
-}
 module.exports ={
     getAll,
     getById,
@@ -154,5 +141,4 @@ module.exports ={
     add, 
     generate, 
     update,
-    file,
 }
