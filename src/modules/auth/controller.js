@@ -2,7 +2,6 @@ const db = require ('../../DB/mysql')
 const bcrypt = require("bcrypt"); 
 const auth = require('../../authentication/index')
 const authMail = require('../authMail');
-const userControler = require('../UsersApi/controller'); 
 const table = 'access'
 
 
@@ -23,24 +22,24 @@ async function update(data, condition){
 }
 async function login(email, password){
   //  if(authMail.validateMail(email)){ 
-        const user = await userControler.getById(email); 
-        const access = await db.query(table, {email_User : email});
-        const data = {
-            First_Name: user.First_Name,
-            Email: user.Email,
-            Imagen : 'https://ibb.co/jLrC7q3',
-            Rol : access.rol
-        }
-        return bcrypt.compare(password,access.password)
-            .then(result =>{
-                if(result){
-                    return auth.assignToken({...data})
-                }
-                throw new Error("Invalid information"); 
-            })
-            .catch(err =>{
-                throw new Error("Invalid information"); 
-            })
+    const user = await db.query('Users',{Email : email}); 
+    const access = await db.query(table, {email_User : email});
+    const data = {
+        First_Name: user.First_Name,
+        Email: user.Email,
+        Imagen : 'https://i.ibb.co/8j7yFGP/user-Login.png',
+        Rol : access.rol
+    }
+    return bcrypt.compare(password,access.password)
+        .then(result =>{
+            if(result){
+                return auth.assignToken({...data})
+            }
+            throw new Error("Invalid information"); 
+        })
+        .catch(err =>{
+            throw new Error("Invalid information"); 
+        })
 /*     }else{
         throw new Error("Invalid information");
     } */
