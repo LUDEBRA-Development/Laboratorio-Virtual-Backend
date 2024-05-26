@@ -12,4 +12,5 @@ exports.error = function (req, res, message, status = 500){
         status: status,
         body : message
     });
+    console.log(message); 
 }
