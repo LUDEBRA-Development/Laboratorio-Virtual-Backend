@@ -36,6 +36,7 @@ async function add(body){
             First_Name: body.First_Name,
             Second_Name:body.Second_Name ,
             Email: body.Email,
+            Profile_Picture : 'https://res.cloudinary.com/dxtvgcwyq/image/upload/v1716706261/onmzvqqwjg1gwktyhcvy.png'
         }      
        const cachedCode = validationCache.get(user.Email);
        if(body.validationCode === cachedCode && cachedCode){
