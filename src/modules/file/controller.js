@@ -2,6 +2,9 @@ const cloudinary = require('../../DB/cloudinary/config');
 
 async function file(file){
     try {
+        if(!file){
+            throw new Error ("Ey cachon manda eso bien")
+        }
         const result = await cloudinary.uploader.upload(file.tempFilePath);
         return {
           success: true,
