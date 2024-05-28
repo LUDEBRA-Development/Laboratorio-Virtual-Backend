@@ -1,4 +1,4 @@
-const cloudinary = require('../../DB/cloudinary/config'); 
+const cloudinary = require('./config'); 
 
 async function add(file,folder){
     const result = await cloudinary.uploader.upload(file.tempFilePath, {folder : folder});

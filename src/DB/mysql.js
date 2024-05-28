@@ -120,14 +120,14 @@ function update(table, data, condition ){
     });
 }
 
-function query(table, query){
+function query(table, conditions){
     return new Promise((resolve, reject)=>{
-        connection.query(`SELECT * FROM ${table} WHERE ?`, [query], (err, result)=>{
+        connection.query(`SELECT * FROM ${table} WHERE ?`, conditions, (err, result)=>{
             if (err) {
                 reject(err);
             } else {
                 if (result.length > 0) {
-                    resolve(result[0]);
+                    resolve(result);
                 } else {
                     const error = new Error();
                     reject(error);
@@ -136,7 +136,11 @@ function query(table, query){
         });
     });
 }
+
  
+
+
+
 function getById(table, id){
     return new Promise((resolve, reject)=>{
         connection.query(`SELECT * FROM ${table} WHERE ?`, [id], (err, result)=>{

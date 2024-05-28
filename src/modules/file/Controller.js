@@ -1,5 +1,5 @@
-const db = require ('../../../DB/mysql');
-const table = 'Users_courses';
+const db = require ('../../DB/mysql');
+const table = 'files';
 function getAll(){
     return db.getAll(table);
 }
@@ -23,15 +23,11 @@ function update(body, id){
     }
     return db.update(table,courseUser,{Email : id})
 }
-function query(id){
-    return db.query(table, id);
-}
 module.exports ={
     getAll,
     getById,
     add, 
     update,
-    query, 
 }
 
 
