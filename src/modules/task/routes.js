@@ -33,7 +33,7 @@ routes.post('/', security(),  async (req, res, next)=>{
 })
 routes.post('/:id',security(),async (req, res, next)=>{
     try{
-        const items = await controller.update(req.body,req.params.id);
+        const items = await controller.update(req.body,req.params.id,req.files.file);
         response.success(req, res, "Item successfully updated", 200);
     }catch(err){
         next(err)

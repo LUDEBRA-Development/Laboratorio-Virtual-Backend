@@ -122,12 +122,16 @@ function update(table, data, condition ){
 
 function query(table, conditions){
     return new Promise((resolve, reject)=>{
-        connection.query(`SELECT * FROM ${table} WHERE ?`, conditions, (err, result)=>{
+        const keys = Object.keys(conditions);
+        const values = Object.values(conditions);
+        const sql = `SELECT * FROM ${table} WHERE ${keys.map(key => `${key} = ?`).join(' AND ')}`;
+
+        connection.query(sql, values, (err, result)=>{
             if (err) {
                 reject(err);
             } else {
                 if (result.length > 0) {
-                    resolve(result);
+                    resolve(result[0]);
                 } else {
                     const error = new Error();
                     reject(error);

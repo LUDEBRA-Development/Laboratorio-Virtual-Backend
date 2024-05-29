@@ -5,7 +5,7 @@ function getAll(){
 }
 
 function getById(id){
-    return db.getById(table, {Id_course : id});
+    return db.getById(table, id);
 }
 
 /* function remove(body){
@@ -18,10 +18,10 @@ function add(data){
 
 function update(body, id){
     const courseUser = {
-        Email: body.Email,
+        email_User: body.email_User,
         Id_course : body.Id_course
     }
-    return db.update(table,courseUser,{Email : id})
+    return db.update(table,courseUser,{email_User : email_User})
 }
 module.exports ={
     getAll,

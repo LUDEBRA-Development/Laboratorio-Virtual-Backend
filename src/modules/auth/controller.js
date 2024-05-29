@@ -24,18 +24,20 @@ async function login(email, password){
   //  if(authMail.validateMail(email)){ 
     const user = await db.query('Users',{Email : email}); 
     const access = await db.query(table, {email_User : email});
+    
     const data = {
         First_Name: user.First_Name,
         email_User: user.Email,
         Imagen : user.Profile_Picture,
         rol : access.rol
     }
-    return bcrypt.compare(password,access.password)
+
+    return bcrypt.compare(password, access.password)
         .then(result =>{
             if(result){
                 return auth.assignToken({...data})
             }
-            throw new Error("Invalid information"); 
+            throw new Error("Invalid information");
         })
         .catch(err =>{
             throw new Error("Invalid information"); 

@@ -1,6 +1,7 @@
 const db = require ('../../DB/mysql');
 const fileController = require('../file/Controller')
 const coursesController = require ('../courses/cousesUsers/Controller')
+const DBfile = require('../../DB/cloudinary/controller')
 const table = 'tasks';
 function getAll(){
     return db.getAll(table);
@@ -41,13 +42,13 @@ function add(body){
 
 }
 
-async function update(body, id){
+async function update(body, id_task,file){
     let task;
     const rolUser = body.rol; 
     if(rolUser==='2'){
         const fechaActual = new Date();
         const formattedDate = fechaActual.toISOString().slice(0, 19).replace('T', ' ');
-        task = await getById(id); 
+        task = await getById(id_task); 
         const data = {
             Name : body.Name || task.Name, 
             Descriptions : body.Descriptions || task.Descriptions,
@@ -56,29 +57,29 @@ async function update(body, id){
             Feedback_comments : body.Feedback_comments || null,
             Qualification : body.Qualification, 
         }
-        return db.update(table,data,{Id_task : id})
+        return db.update(table,data,{Id_task : id_task})
     }else{
         if(rolUser==='3'){
+            task = await getById(id_task); 
             const fechaActual = new Date();
-            const formattedDate = fechaActual.toISOString().slice(0, 19).replace('T', ' ');
+            const formattedDate = fechaActual.toISOString().slice(0, 19).replace('T', ' '); 
             const data = {
                 Delivery_date: formattedDate,
+                Comment : body.Comment || task.Comment || null
             }
-            db.update(table,data,{Id_task : id});
-            const file = {
-                Id_file : '123',
-                Url_file : 'https:adad',
-                Id_task : id,
-                email_User : body.email_User
-            }
-            task = await getById(id); 
-            const conditions = {
-                Id_course: task.Id_course,
-                Email: body.email_User
-            };
-            const validateUser = await coursesController.query(conditions)
-            if(validateUser){
-                fileController.add(file); 
+            db.update(table,data,{Id_task : id_task});
+            if(file){
+                fileController.getById({email_User : body.email_User})
+                .then(result=>{
+                    if(id_task ==result.Id_task){
+                         saveFile(file, id_task, task, body.email_User, result.Id_file); 
+                    }else{
+                        saveFile(file,id_task, task, body.email_User); 
+                    }
+                })
+                .catch(err =>{
+                    saveFile(file,id_task, task, body.email_User); 
+                })
             }
         }
         else{
@@ -86,6 +87,25 @@ async function update(body, id){
         }
     }
 }
+async function saveFile(file, Id_task, task, email_User,   Id_file){
+    const folder = 'Documents';  
+    let fileCloudinary=  await DBfile.update(file,folder ,Id_file)
+     const dataFile = {
+        Id_file : fileCloudinary.public_id,
+        Url_file : fileCloudinary.url,
+        Id_task : Id_task,
+        email_User : email_User
+    }
+    const conditions = {
+        Id_course: task.Id_course,
+        Email: email_User
+    };
+    const validateUser = await coursesController.query(conditions)
+    if(validateUser){
+        fileController.add(dataFile); 
+    } 
+}
+
 
 function remove(body){
     return db.remove(table, {Id_task :body.Id_task});

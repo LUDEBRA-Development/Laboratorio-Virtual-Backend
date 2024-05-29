@@ -8,7 +8,7 @@ async function add(file,folder){
           public_id: result.public_id,
     };
 }
-async function update(file, existingPublicId,folder){
+async function update(file,folder,existingPublicId){
     let result; 
     if (existingPublicId) {
         result = await cloudinary.uploader.upload(file.tempFilePath, {
@@ -17,13 +17,13 @@ async function update(file, existingPublicId,folder){
             folder: folder
         });
     } else {
-        result = await cloudinary.uploader.upload(file.tempFilePath, folder);
+        result = await cloudinary.uploader.upload(file.tempFilePath, {folder : folder});
     }
     return {
-          success: true,
-          url: result.secure_url,
-          public_id: result.public_id,
-    };
+        success: true,
+        url: result.secure_url,
+        public_id: result.public_id,
+  };
 }
 
 module.exports ={
