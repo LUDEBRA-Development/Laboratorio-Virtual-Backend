@@ -23,7 +23,7 @@ async function add(file) {
 
         formData.append('file', fileContent, { filename: file.name }); 
 
-        const response = await axios.post(serverFilelocal, formData, {
+        const response = await axios.post(serverFile, formData, {
             headers: {
                 ...formData.getHeaders(),
             },
