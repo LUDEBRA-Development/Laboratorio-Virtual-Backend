@@ -1,10 +1,12 @@
 const db = require ('../../DB/mysql');
 const fileController = require('../file/Controller')
 const coursesController = require ('../courses/cousesUsers/Controller')
-const DBfile = require('../../DB/cloudinary/controller')
+const DBfile = require('../../DB/cloudFile/controller')
 const table = 'tasks';
+
+
 function getAll(){
-    return db.getAll(table);
+    return DBfile.getAll();
 }
 
 function getById(id){
@@ -88,11 +90,10 @@ async function update(body, id_task,file){
     }
 }
 async function saveFile(file, Id_task, task, email_User,   Id_file){
-    const folder = 'Documents';  
-    let fileCloudinary=  await DBfile.update(file,folder ,Id_file)
+    let fileCloudinary=  await DBfile.add(file)
      const dataFile = {
-        Id_file : fileCloudinary.public_id,
-        Url_file : fileCloudinary.url,
+        Id_file : fileCloudinary.Id_file,
+        Url_file : fileCloudinary.Url,
         Id_task : Id_task,
         email_User : email_User
     }

@@ -1,5 +1,5 @@
 exports.success = function (req, res, message = '', status = 200){
-    res.status(status).send({
+    res.status(status).json({
         error: false,
         status: status,
         body : message

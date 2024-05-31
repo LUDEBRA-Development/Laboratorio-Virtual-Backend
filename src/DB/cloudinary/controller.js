@@ -8,6 +8,7 @@ async function add(file,folder){
           public_id: result.public_id,
     };
 }
+
 async function update(file,folder,existingPublicId){
     let result; 
     if (existingPublicId) {
