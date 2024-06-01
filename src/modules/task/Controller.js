@@ -59,7 +59,7 @@ async function update(body, id_task,file){
             Feedback_comments : body.Feedback_comments || null,
             Qualification : body.Qualification, 
         }
-        return db.update(table,data,{Id_task : id_task})
+        await db.update(table,data,{Id_task : id_task})
     }else{
         if(rolUser==='3'){
             task = await getById(id_task); 
@@ -69,19 +69,18 @@ async function update(body, id_task,file){
                 Delivery_date: formattedDate,
                 Comment : body.Comment || task.Comment || null
             }
-            db.update(table,data,{Id_task : id_task});
-            if(file){
-                fileController.getById({email_User : body.email_User})
-                .then(result=>{
-                    if(id_task ==result.Id_task){
-                         saveFile(file, id_task, task, body.email_User, result.Id_file); 
-                    }else{
-                        saveFile(file,id_task, task, body.email_User); 
+            await db.update(table,data,{Id_task : id_task});
+            if (file) {
+                try {
+                    const result = await fileController.getById({ email_User: body.email_User });
+                    if (id_task == result.Id_task) {
+                        await saveFile(file, id_task, task, body.email_User, result.Id_file); 
+                    } else {
+                        await saveFile(file, id_task, task, body.email_User); 
                     }
-                })
-                .catch(err =>{
-                    saveFile(file,id_task, task, body.email_User); 
-                })
+                } catch (err) {
+                    await saveFile(file, id_task, task, body.email_User);
+                }
             }
         }
         else{
@@ -89,21 +88,23 @@ async function update(body, id_task,file){
         }
     }
 }
-async function saveFile(file, Id_task, task, email_User,   Id_file){
-    let fileCloudinary=  await DBfile.add(file)
+async function saveFile(file, Id_task, task, email_User,   Id_file = null){
+    const fileCloudinary =  await DBfile.add(file)
+    console.log(fileCloudinary)
      const dataFile = {
         Id_file : fileCloudinary.Id_file,
         Url_file : fileCloudinary.Url,
         Id_task : Id_task,
         email_User : email_User
     }
+    console.log(dataFile)
     const conditions = {
         Id_course: task.Id_course,
         Email: email_User
     };
     const validateUser = await coursesController.query(conditions)
     if(validateUser){
-        fileController.add(dataFile); 
+       await fileController.add(dataFile); 
     } 
 }
 

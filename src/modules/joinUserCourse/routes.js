@@ -14,7 +14,7 @@ routes.get('/courses/:id',security(),  async (req, res, next)=>{
     }
 })
 //get task
-routes.get('/task/:id', async (req, res, next)=>{
+routes.get('/tasks/:id', async (req, res, next)=>{
     try{
         const items = await controller.getTasks(req.params.id);
         response.success(req, res, items, 200);
