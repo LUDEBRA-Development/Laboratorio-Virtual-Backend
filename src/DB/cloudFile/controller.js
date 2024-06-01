@@ -3,12 +3,12 @@ const FormData = require('form-data');
 const fs = require('fs');
 
 
-const serverFile= 'https://uploadcare-example.onrender.com/upload'
+const serverFile= 'https://file-cloud-1lcm.onrender.com/upload'
 const serverFilelocal = 'http://localhost:8080/upload';
 
 async function getAll(){
     try {
-        const response = await axios.get('http://localhost:8080');
+        const response = await axios.get('serverFile');
         return response.data;
     } catch (error) {
         console.error('Error haciendo la petición:', error);
