@@ -23,6 +23,7 @@ function remove(body){
 
 async function generate(body){
     //if(authMail.validateMail(body.Email)){      
+        console.log(body.Email)
         const user = {
             Email: body.Email,
         }
@@ -74,7 +75,7 @@ async function update(body,file,Email){
         Second_Name:body.Second_Name || users.Second_Name,
         Email: users.Email,
         Profile_Picture : users.Profile_Picture,
-        Id_Profile : users.Id_Profile
+        Id_Profile : users.Id_Profile 
     };
     if(rolUser === '1'){ //ifAdmin
         const item = await auth.getById(Email); 
@@ -103,19 +104,21 @@ async function update(body,file,Email){
                 await db.update(table,user, {Email : Email}); 
                 await auth.update(accessUser, {email_User : access.email_User});
             }
-        }else{
+        
             if(body.First_Name || body.Second_Name || file){
-                let item; 
-                const folderSave = 'profile picture'; 
-                if(users.Id_Profile== null){ //add
-                    
-                    item = await fileOptions.add(file, folderSave); 
+                if(file){
+                    let item; 
+                    const folderSave = 'profile picture'; 
+                    if(users.Id_Profile== null){ //add
+                        
+                        item = await fileOptions.add(file, folderSave); 
+                    }
+                    else{
+                        item =  await fileOptions.update(file, user.Id_Profile); 
+                    } 
+                    user.Profile_Picture= item.url; 
+                    user.Id_Profile= item.public_id; 
                 }
-                else{
-                    item =  await fileOptions.update(file, user.Id_Profile); 
-                } 
-                user.Profile_Picture= item.url; 
-                user.Id_Profile= item.public_id; 
                 await db.update(table,user,{Email : Email});
             }
         }
