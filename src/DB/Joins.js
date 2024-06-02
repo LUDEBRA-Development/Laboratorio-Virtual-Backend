@@ -22,7 +22,7 @@ function getAllTask(Email){
         return err;
     }
 }
-function getTasks(data){
+async function getTasks(data){
     const sql1 = `
     select  t.*, f.email_User,f.Id_file, f.Url_file,ac.rol  
     FROM tasks t 
@@ -52,10 +52,15 @@ function getTasks(data){
 
 
     try{
-        return db.getUserInfo(sql1, [data.Id_course, data.Id_task, data.Email,data.Id_course ]);
+        let item  = await db.getUserInfo(sql1, [data.Id_course, data.Id_task, data.Email,data.Id_course ]);
+        if(item){
+            return item
+        }
     }catch(err){
-        return db.getUserInfo(sql2, Email);
+        item =   await db.getUserInfo(sql2, data.Email);
+        return item;
     }
+
     
 }
 
