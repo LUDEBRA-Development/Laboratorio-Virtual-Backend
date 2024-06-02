@@ -168,7 +168,7 @@ function getById(table, id){
 function getUserInfo(sql, data){
 
     return new Promise((resolve, reject)=>{
-        connection.query(sql, [data], (err, result) => {
+        connection.query(sql, data, (err, result) => {
             if (err) {
                 reject(err);
             } else {

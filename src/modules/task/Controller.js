@@ -47,46 +47,56 @@ function add(body){
 async function update(body, id_task,file){
     let task;
     const rolUser = body.rol; 
-    if(rolUser==='2'){
-        const fechaActual = new Date();
-        const formattedDate = fechaActual.toISOString().slice(0, 19).replace('T', ' ');
-        task = await getById(id_task); 
-        const data = {
-            Name : body.Name || task.Name, 
-            Descriptions : body.Descriptions || task.Descriptions,
-            Expiration_date : body.Expiration_date || task.Expiration_date,
-            Qualification_date : formattedDate,
-            Feedback_comments : body.Feedback_comments || null,
-            Qualification : body.Qualification, 
-        }
-        await db.update(table,data,{Id_task : id_task})
-    }else{
-        if(rolUser==='3'){
-            task = await getById(id_task); 
+    task = await getById(id_task);
+    const conditions = {
+        Id_course: task.Id_course,
+        Email: body.email_User
+    };
+    const validateUser = await coursesController.query(conditions)
+    if (validateUser) {
+        if (rolUser === '2') {
             const fechaActual = new Date();
-            const formattedDate = fechaActual.toISOString().slice(0, 19).replace('T', ' '); 
+            const formattedDate = fechaActual.toISOString().slice(0, 19).replace('T', ' ');
+            task = await getById(id_task);
             const data = {
-                Delivery_date: formattedDate,
-                Comment : body.Comment || task.Comment || null
+                Name: body.Name || task.Name,
+                Descriptions: body.Descriptions || task.Descriptions,
+                Expiration_date: body.Expiration_date || task.Expiration_date,
+                Qualification_date: formattedDate,
+                Feedback_comments: body.Feedback_comments || null,
+                Qualification: body.Qualification,
             }
-            await db.update(table,data,{Id_task : id_task});
-            if (file) {
-                try {
-                    const result = await fileController.getById({ email_User: body.email_User });
-                    if (id_task == result.Id_task) {
-                        await saveFile(file, id_task, task, body.email_User, result.Id_file); 
-                    } else {
-                        await saveFile(file, id_task, task, body.email_User); 
+            await db.update(table, data, { Id_task: id_task })
+        } else {
+            if (rolUser === '3') {
+                const fechaActual = new Date();
+                const formattedDate = fechaActual.toISOString().slice(0, 19).replace('T', ' ');
+                const data = {
+                    Delivery_date: formattedDate,
+                    Comment: body.Comment || task.Comment || null
+                }
+                await db.update(table, data, { Id_task: id_task });
+                if (file) {
+                    try {
+                        const result = await fileController.getById({ email_User: body.email_User });
+                        if (task.Id_task == result.Id_task) {
+                            await saveFile(file, id_task, task, body.email_User, result.Id_file);
+                        } else {
+                            await saveFile(file, id_task, task, body.email_User);
+                        }
+                    } catch (err) {
+                        await saveFile(file, id_task, task, body.email_User);
                     }
-                } catch (err) {
-                    await saveFile(file, id_task, task, body.email_User);
                 }
             }
+            else {
+                throw new Error(); 
+            }
         }
-        else{
-            throw new Error(); 
-        }
+    } else {
+        throw new Error();
     }
+
 }
 async function saveFile(file, Id_task, task, email_User,   Id_file = null){
     const fileCloudinary =  await DBfile.add(file)
@@ -96,16 +106,8 @@ async function saveFile(file, Id_task, task, email_User,   Id_file = null){
         Url_file : fileCloudinary.Url,
         Id_task : Id_task,
         email_User : email_User
-    }
-    console.log(dataFile)
-    const conditions = {
-        Id_course: task.Id_course,
-        Email: email_User
-    };
-    const validateUser = await coursesController.query(conditions)
-    if(validateUser){
-       await fileController.add(dataFile); 
-    } 
+     }
+    await fileController.add(dataFile);
 }
 
 
