@@ -9,12 +9,12 @@ function getCourse(Email){
     `;
     return db.getUserInfo(sql, Email);
 }
-
 function getAllTask(Email){
     const sql1 = `
-    select * from tasks  c 
-    join Users_courses us on  c.Id_course = us.Id_course 
-    where us.Email = ?                               
+    SELECT c.Name AS Course, t.* FROM tasks  t
+    JOIN Users_courses us ON  t.Id_course = us.Id_course
+    JOIN courses c ON c.Id_course = t.Id_course
+    WHERE us.Email = ?                               
     `;
     try{
         return db.getUserInfo(sql1, Email);
@@ -22,7 +22,6 @@ function getAllTask(Email){
         return err;
     }
 }
-
 function getTasks(data){
     const sql1 = `
     select  t.*, f.email_User,f.Id_file, f.Url_file,ac.rol  
