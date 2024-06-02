@@ -1,12 +1,13 @@
 const db = require ('../../DB/mysql');
+const dbJoin = require ('../../DB/Joins')
 const fileController = require('../file/Controller')
 const coursesController = require ('../courses/cousesUsers/Controller')
 const DBfile = require('../../DB/cloudFile/controller')
 const table = 'tasks';
 
 
-function getAll(){
-    return db.getAll(table);
+function getAll(body){
+    return dbJoin.getAllTask(body.email_User); 
 }
 
 function getByIdTask(id){
@@ -39,10 +40,6 @@ function add(body){
     }
 
 
-/*  asignada
-    enviada
-    calificada 
-    vencida */
 
 }
 

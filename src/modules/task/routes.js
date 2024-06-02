@@ -4,9 +4,9 @@ const response = require('../../red/response')
 const controller = require('./Controller');
 const security = require('./security');
 
-routes.get('/',  async (req, res, next)=>{
+routes.get('/', security(),  async (req, res, next)=>{
     try{
-        const items = await controller.getAll();
+        const items = await controller.getAll(req.body);
         response.success(req, res, items, 200);
     }catch(err){
         next(err)

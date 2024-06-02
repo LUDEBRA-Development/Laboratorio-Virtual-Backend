@@ -9,6 +9,20 @@ function getCourse(Email){
     `;
     return db.getUserInfo(sql, Email);
 }
+
+function getAllTask(Email){
+    const sql1 = `
+    select * from tasks  c 
+    join Users_courses us on  c.Id_course = us.Id_course 
+    where us.Email = ?                               
+    `;
+    try{
+        return db.getUserInfo(sql1, Email);
+    }catch(err){
+        return err;
+    }
+}
+
 function getTasks(data){
     const sql1 = `
     select  t.*, f.email_User,f.Id_file, f.Url_file,ac.rol  
@@ -36,6 +50,8 @@ function getTasks(data){
     JOIN simulator s ON t.Id_simulador = s.Id_simulador                                 
     WHERE c.Statu = '1' AND u.Email = ?                               
     `;
+
+
     try{
         return db.getUserInfo(sql1, [data.Id_course, data.Id_task, data.Email,data.Id_course ]);
     }catch(err){
@@ -47,4 +63,5 @@ function getTasks(data){
 module.exports ={
     getCourse, 
     getTasks,
+    getAllTask,
 }
