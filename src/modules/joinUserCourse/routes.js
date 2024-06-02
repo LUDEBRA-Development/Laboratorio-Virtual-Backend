@@ -5,9 +5,9 @@ const controller = require('./controller');
 const security = require('./security');
 
 //get courses
-routes.get('/courses/:id',security(),  async (req, res, next)=>{
+routes.get('/courses',security(),  async (req, res, next)=>{
     try{
-        const items = await controller.getCourse(req.params.id);
+        const items = await controller.getCourse(req.body);
         response.success(req, res, items, 200);
     }catch(err){
         next(err)

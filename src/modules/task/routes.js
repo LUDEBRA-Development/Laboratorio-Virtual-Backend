@@ -15,13 +15,22 @@ routes.get('/',  async (req, res, next)=>{
 
 routes.get('/:id',  async (req, res, next)=>{
     try{
-        const items = await controller.getById(req.params.id);
+        const items = await controller.getByIdTask(req.params.id);
         response.success(req, res, items, 200);
     }catch(err){
         next(err)
     }
 })
 
+routes.get('/course/:id',  async (req, res, next)=>{
+    try{
+        const items = await controller.getByIdCourse(req.params.id);
+        console.log(items);
+        response.success(req, res, items, 200);
+    }catch(err){
+        next(err)
+    }
+})
 
 routes.post('/', security(),  async (req, res, next)=>{
     try{

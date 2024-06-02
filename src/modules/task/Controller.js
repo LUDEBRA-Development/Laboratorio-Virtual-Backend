@@ -6,13 +6,15 @@ const table = 'tasks';
 
 
 function getAll(){
-    return DBfile.getAll();
+    return db.getAll(table);
 }
 
-function getById(id){
+function getByIdTask(id){
     return db.getById(table, {Id_task : id});
 }
-
+function getByIdCourse(id){
+    return db.getById(table, {Id_course : id});
+}
 function add(body){
     const rolUser = body.rol; 
     if(rolUser==='2'){
@@ -57,16 +59,12 @@ async function update(body, id_task,file){
         if (rolUser === '2') {
             const fechaActual = new Date();
             const formattedDate = fechaActual.toISOString().slice(0, 19).replace('T', ' ');
-            task = await getById(id_task);
-            const data = {
+            const dataTask = {
                 Name: body.Name || task.Name,
                 Descriptions: body.Descriptions || task.Descriptions,
-                Expiration_date: body.Expiration_date || task.Expiration_date,
-                Qualification_date: formattedDate,
-                Feedback_comments: body.Feedback_comments || null,
-                Qualification: body.Qualification,
+                Expiration_date: body.Expiration_date || task.Expiration_date
             }
-            await db.update(table, data, { Id_task: id_task })
+            await db.update(table, dataTask, { Id_task: task.Id_task })
         } else {
             if (rolUser === '3') {
                 const fechaActual = new Date();
@@ -75,17 +73,12 @@ async function update(body, id_task,file){
                     Delivery_date: formattedDate,
                     Comment: body.Comment || task.Comment || null
                 }
-                await db.update(table, data, { Id_task: id_task });
+                await db.update(table, data, { Id_task: task.Id_task });
                 if (file) {
                     try {
-                        const result = await fileController.getById({ email_User: body.email_User });
-                        if (task.Id_task == result.Id_task) {
-                            await saveFile(file, id_task, task, body.email_User, result.Id_file);
-                        } else {
-                            await saveFile(file, id_task, task, body.email_User);
-                        }
+                        await saveFile(file, task.Id_task, body.email_User);
                     } catch (err) {
-                        await saveFile(file, id_task, task, body.email_User);
+                        console.log(err);
                     }
                 }
             }
@@ -98,16 +91,17 @@ async function update(body, id_task,file){
     }
 
 }
-async function saveFile(file, Id_task, task, email_User,   Id_file = null){
-    const fileCloudinary =  await DBfile.add(file)
-    console.log(fileCloudinary)
-     const dataFile = {
-        Id_file : fileCloudinary.Id_file,
-        Url_file : fileCloudinary.Url,
-        Id_task : Id_task,
-        email_User : email_User
-     }
-    await fileController.add(dataFile);
+async function saveFile(file, Id_task, email_User){
+    const cloudFile =  await DBfile.add(file)
+    if(cloudFile){
+        const dataFile = {
+            Id_file : cloudFile.Id_file,
+            Url_file : cloudFile.Url,
+            Id_task : Id_task,
+            email_User : email_User
+         }
+        await fileController.add(dataFile);
+    }
 }
 
 
@@ -116,7 +110,8 @@ function remove(body){
 }
 module.exports ={
     getAll,
-    getById,
+    getByIdTask,
+    getByIdCourse,
     add, 
     update,
     remove,

@@ -1,8 +1,9 @@
 const db = require ('../../DB/Joins'); 
 
-function getCourse(Email){
-    return db.getCourse(Email);
+function getCourse(body){
+    return db.getCourse(body.Email);
 }
+
  async function getTasks(body){
     const tasks  = await db.getTasks(body);
     

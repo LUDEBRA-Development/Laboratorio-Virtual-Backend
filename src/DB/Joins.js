@@ -2,7 +2,7 @@ const db = require('./mysql');
 
 function getCourse(Email){
     const sql = `
-        SELECT c.Name
+        SELECT c.Name,  c.Id_course
         FROM Users_courses us
         JOIN courses c ON c.Id_course = us.Id_course
         WHERE c.Statu = '1' AND us.Email = ?;

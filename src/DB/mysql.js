@@ -152,7 +152,12 @@ function getById(table, id){
                 reject(err);
             } else {
                 if (result.length > 0) {
-                    resolve(result[0]);
+                    if(result.length ===1){
+                        resolve(result[0]);
+                    }else{
+                        resolve(result);
+                    }
+                    
                 } else {
                     const error = new Error();
                     reject(error);
