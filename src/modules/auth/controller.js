@@ -27,6 +27,7 @@ async function login(email, password){
     
     const data = {
         First_Name: user.First_Name,
+        Last_Name : user.Second_Name, 
         email_User: user.Email,
         Imagen : user.Profile_Picture,
         rol : access.rol
