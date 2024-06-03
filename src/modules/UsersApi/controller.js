@@ -118,6 +118,8 @@ async function update(body,file,Email){
                     } 
                     user.Profile_Picture= item.url; 
                     user.Id_Profile= item.public_id; 
+                }else{
+                    console.log("No file")
                 }
                 await db.update(table,user,{Email : Email});
             }
