@@ -4,23 +4,6 @@ const response = require('../../red/response')
 const controller = require('./Controller');
 const security = require('./security');
 
-routes.get('/',  async (req, res, next)=>{
-    try{
-        const items = await controller.getAll();
-        response.success(req, res, items, 200);
-    }catch(err){
-        next(err)
-    }
-})
-
-routes.get('/:id',  async (req, res, next)=>{
-    try{
-        const items = await controller.getByIdTask(req.params.id);
-        response.success(req, res, items, 200);
-    }catch(err){
-        next(err)
-    }
-})
 
 
 routes.post('/', security(),  async (req, res, next)=>{
@@ -33,7 +16,7 @@ routes.post('/', security(),  async (req, res, next)=>{
 })
 routes.post('/:id',security(),async (req, res, next)=>{
     try{
-        const items = await controller.update(req.body,req.params.id,req.files.file);
+        const items = await controller.update(req.body,req.params.id);
         response.success(req, res, "Item successfully updated", 200);
     }catch(err){
         next(err)

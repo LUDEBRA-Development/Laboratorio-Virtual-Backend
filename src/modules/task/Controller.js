@@ -3,6 +3,7 @@ const dbJoin = require ('../../DB/Joins')
 const fileController = require('../file/Controller')
 const coursesController = require ('../courses/cousesUsers/Controller')
 const DBfile = require('../../DB/cloudFile/controller')
+const Qualification = require('./Qualification/Controller')
 const table = 'tasks';
 
 
@@ -60,6 +61,11 @@ async function update(body, id_task,file){
                 Name: body.Name || task.Name,
                 Descriptions: body.Descriptions || task.Descriptions,
                 Expiration_date: body.Expiration_date || task.Expiration_date
+            }
+            const dataQualification ={
+                 Qualification : body.Qualification,
+                 email_Users : body.email_Users, 
+                 Id_task : task.Id_task
             }
             await db.update(table, dataTask, { Id_task: task.Id_task })
         } else {

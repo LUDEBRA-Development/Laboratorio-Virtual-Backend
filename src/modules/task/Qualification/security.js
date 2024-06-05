@@ -4,9 +4,7 @@ module.exports= function(){
         const decoded = auth.tokenCheck.confirmToken(req); 
         if(decoded){
             const userRole = decoded.rol;
-            if(userRole ==='1' || userRole==='2' || userRole==='3'){
-                req.body.rol = userRole; 
-                req.body.email_User = decoded.email_User;
+            if(userRole ==='1' || userRole==='2'){
                 next()
             }else{
                 const error = new Error('Unauthorized access');

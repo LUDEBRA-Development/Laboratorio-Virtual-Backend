@@ -1,11 +1,12 @@
+const nodemon = require('nodemon');
 const db = require ('../../DB/mysql')
 const table = 'courses'
 function getAll(){
-    return db.getAll(table);
+    return  Date.now()
 }
 
 function getById(id){
-    return db.getById(table, {Id_course : id});
+    return db.getById(table, id);
 }
 
 function remove(body){
@@ -15,7 +16,8 @@ function remove(body){
 function add(body){
     const course = {
         Name : body.Name,
-        Statu :  '1'
+        Statu :  '1',
+        code : Date.now()
     }
     return db.add(table, course);
 }

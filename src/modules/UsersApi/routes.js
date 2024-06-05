@@ -55,8 +55,6 @@ routes.post('/:id',security() ,async (req, res, next)=>{
         
         if (req.files && req.files.image) {
             image = req.files.image;
-        }else{
-            console.log('No image')
         }
         const items = await controller.update(req.body,image,req.params.id);
         response.success(req, res, "Item successfully updated", 200);

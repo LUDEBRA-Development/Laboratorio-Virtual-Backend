@@ -29,6 +29,8 @@ async function generate(body){
         }
         const validationCode = generateValidationCode();
         validationCache.set(user.Email, validationCode);
+        const cachedCode = validationCache.get(user.Email);
+        console.log(cachedCode);
         await sendValidationEmail(user.Email,validationCode)
    // }
 }
@@ -37,31 +39,30 @@ async function add(body){
             First_Name: body.First_Name,
             Second_Name:body.Second_Name ,
             Email: body.Email,
-            Profile_Picture : 'https://res.cloudinary.com/dxtvgcwyq/image/upload/v1716706261/onmzvqqwjg1gwktyhcvy.png',
+            Profile_Picture : 'https://res.cloudinary.com/dxtvgcwyq/image/upload/v1716708743/nyh2tokpxdzmx30fbxxg.png',
             Id_Profile : null
         }      
-       const cachedCode = validationCache.get(user.Email);
+        const cachedCode = validationCache.get(user.Email);  
        if(body.validationCode === cachedCode && cachedCode){
+
             await db.add(table, user)      
-            if(body.Password || body.Email){
+            if(body.Password && body.Email){
                 await auth.add({
                     email_User : body.Email,
                     password: body.Password,
                     rol: body.rol, 
                     statu: body.statu || 1
                 })
-                if(body.Id_course&&(authMail.validateMail(body.Email))){
+                if(body.code){
                     await userCourse.add({
                         Email : body.Email,
                         Id_course : body.Id_course
                     })
-                }else{
-                    new Error(); 
                 }
             }else{
                 new Error(); 
             } 
-         }
+        }
         else{
             new Error(); 
         }
