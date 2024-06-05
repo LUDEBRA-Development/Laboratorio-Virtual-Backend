@@ -12,13 +12,6 @@ function getById(id){
 
 async function add(body){
      await db.add(table, body);
-
-     /*    const dataTaskUser = {
-            Qualification_date: formattedDate,
-            Feedback_comments: body.Feedback_comments || null,
-            Qualification: body.Qualification,
-        }
-        await db.update('User_tasks',dataTaskUser, { Id_task: task.Id_task }) */
 }
 
 async function update(body, Email){
