@@ -11,7 +11,8 @@ function getCourse(Email){
 }
 function getAllTask(Email){
     const sql1 = `
-    SELECT c.Name AS Course, t.* FROM tasks  t
+    SELECT c.Name AS Course, c.Id_course, t.Id_task,  t.Name
+    FROM tasks  t
     JOIN Users_courses us ON  t.Id_course = us.Id_course
     JOIN courses c ON c.Id_course = t.Id_course
     WHERE us.Email = ?                               

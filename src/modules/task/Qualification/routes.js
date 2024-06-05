@@ -1,6 +1,6 @@
 const express = require('express');
 const routes = express.Router();
-const response = require('../../red/response')
+const response = require('../../../red/response')
 const controller = require('./Controller');
 const security = require('./security');
 

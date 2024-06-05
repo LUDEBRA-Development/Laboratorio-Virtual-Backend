@@ -1,4 +1,4 @@
-const auth = require('../../authentication/index')
+const auth = require('../../../authentication/index')
 module.exports= function(){
     function middleware(req,res, next ){
         const decoded = auth.tokenCheck.confirmToken(req); 
