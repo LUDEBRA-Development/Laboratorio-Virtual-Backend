@@ -1,29 +1,20 @@
 const db = require ('../../../DB/mysql');
 const table = 'User_tasks';
 
-
-function getAll(){
-    return db.getAll(table);
-}
-
-function getById(id){
-    return db.getById(table, {Id_task : id});
-}
-
-async function add(body){
-     await db.add(table, body);
-}
-
-async function update(body, Email){
+async function update(body){
+    const condition = `email_Users = ${body.emailUser} AND Id_task = ${body.Id_task}`;
     const data = {
         Qualification : body.Qualification
     }
-    const condition = `email_Users = ${Email} AND Id_task = ${body.Id_task}`;
-    await db.update(table, data, condition);
+    const exist = await db.exist(table, condition);
+    if(exist){
+        await db.update(table, data, condition);
+    }else{
+        await db.add(table, body);
+    }
 }
 
 module.exports ={
-    add, 
     update,
 }
 

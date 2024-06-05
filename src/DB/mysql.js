@@ -188,6 +188,19 @@ function getUserInfo(sql, data){
     });
 }
 
+async function exist(table, condition) {
+    return new Promise((resolve, reject) => {
+        const query = `SELECT COUNT(*) AS count FROM ${table} WHERE ${condition}`;
+        connection.query(query, (err, result) => {
+            if (err) {
+                reject(err); // Rechazar la promesa con el error
+            } else {
+                const count = result[0].count;
+                resolve(count > 0); // Resolver la promesa con true si el conteo es mayor que cero, indicando que existe al menos un registro que cumple con la condición
+            }
+        });
+    });
+}
 
 /* const = "select  u.Email, u.First_Name, u.Second_Name, c.Name, t.Name as Task , t.Descriptions, t.Id_simulador from Users u join Users_courses uc on uc.Email=u.Email
 join  courses c on uc.Id_course=c.Id_course  join  tasks t on c.Id_course= t.Id_course where c.Statu = '1' and  u.Email = ""; 
@@ -201,4 +214,5 @@ module.exports = {
     query,
     update,
     getUserInfo,
+    exist,
 }
