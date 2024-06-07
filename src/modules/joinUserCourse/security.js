@@ -13,6 +13,7 @@ module.exports = function () {
                 } else {
                     if (decoded.rol === '2' || decoded.rol === '3') {
                         req.body.Email = userMailFromToken;
+                        req.body.rol = userRole;
                         next();
                     } else {
                         const error = new Error('Unauthorized access');

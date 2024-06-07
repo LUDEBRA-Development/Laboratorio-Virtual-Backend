@@ -24,67 +24,47 @@ function getAllTask(Email){
         return err;
     }
 }
-async function getTasks(data){
-    const sql1 = `
-    select  t.*, f.email_User,f.Id_file, f.Url_file,ac.rol  
-    FROM tasks t 
-    JOIN files f on t.Id_task = f.Id_task 
-    JOIN access ac on ac.email_User = f.email_User
 
-    WHERE f.email_User = ?
-    `;
-/*     const sql1 = `
-    select  t.*, f.email_User,f.Id_file, f.Url_file,ac.rol  
-    FROM tasks t 
-    JOIN files f on t.Id_task = f.Id_task 
+async function getFileTeacher(data){
+    const sql= `
+    select  f.email_User,f.Id_task, f.Url_file,ac.rol
+    FROM tasks t
+    JOIN files f on t.Id_task = f.Id_task
     JOIN access ac on ac.email_User = f.email_User
-    WHERE t.Id_course = ? AND t.Id_task = ?
-      AND f.email_User IN (
-        ?,
-        (
-          SELECT ac.email_User
-          FROM access ac
-          JOIN Users_courses uc ON ac.email_User = uc.Email
-          WHERE uc.Id_course = ? AND ac.rol = '2'
-        )
-      )
-    `; */
-
-    const sql2 = `
-    SELECT c.Name as Course, t.Name as Task, t.Descriptions, s.Name as Simulator, t.*   
-    FROM Users u                                                                        
-    JOIN Users_courses uc ON uc.Email = u.Email                                         
-    JOIN courses c ON uc.Id_course = c.Id_course                                        
-    JOIN tasks t ON c.Id_course = t.Id_course                                           
-    JOIN simulator s ON t.Id_simulador = s.Id_simulador                                 
-    WHERE c.Statu = '1' AND u.Email = ?                               
+    where ac.rol = '2'
     `;
 
     try{
-        let item  = await db.getUserInfo(sql1, data.Email);
-        if(item){
-            return item
-        }
-        return null;
-        
+        return db.getJoin(sql);
     }catch(err){
         console.log(err);
         return null;
-    }
-/*     try{
-        let item  = await db.getUserInfo(sql1, [data.Id_course, data.Id_task, data.Email,data.Id_course ]);
-        if(item){
-            return item
-        }
-    }catch(err){
-        item =   await db.getUserInfo(sql2, data.Email);
-        return item;
-    } */
-
-    
+    }  
 }
+
+async function getFileStudent(data){
+    const sql = `
+    select  f.email_User,f.Id_task, f.Url_file,ac.rol  
+    FROM tasks t 
+    JOIN files f on t.Id_task = f.Id_task 
+    JOIN access ac on ac.email_User = f.email_User
+    WHERE ac.rol = '3' 
+    `;
+
+    try{
+        return await db.getUserInfo(sql, data.Email);
+    }catch(err){
+        console.log(err);
+        return null;
+    }  
+}
+
+
+
+
+
 async function getTasksNoFile(data){
-    const sql2 = `
+    const sql = `
     select  t.*
     FROM Users u                                                                        
     JOIN Users_courses uc ON uc.Email = u.Email                                         
@@ -95,7 +75,7 @@ async function getTasksNoFile(data){
     `;
 
     try{
-        let item  = await db.getUserInfo(sql2, data.Email);
+        let item  = await db.getUserInfo(sql, data.Email);
         if(item){
             return item
         }
@@ -103,23 +83,13 @@ async function getTasksNoFile(data){
     }catch(err){
         console.log(err);
         return null;
-    }
-/*     try{
-        let item  = await db.getUserInfo(sql1, [data.Id_course, data.Id_task, data.Email,data.Id_course ]);
-        if(item){
-            return item
-        }
-    }catch(err){
-        item =   await db.getUserInfo(sql2, data.Email);
-        return item;
-    } */
-
-    
+    }    
 }
 
 module.exports ={
     getCourse, 
-    getTasks,
+    getFileStudent,
+    getFileTeacher,
     getAllTask,
     getTasksNoFile,
 }

@@ -68,6 +68,13 @@ async function update(body, id_task,file){
                  Id_task : task.Id_task
             }
             await db.update(table, dataTask, { Id_task: task.Id_task })
+            if (file) {
+                try {
+                    await saveFile(file, task.Id_task, body.email_User);
+                } catch (err) {
+                    console.log(err);
+                }
+            }
         } else {
             if (rolUser === '3') {
                 const fechaActual = new Date();
