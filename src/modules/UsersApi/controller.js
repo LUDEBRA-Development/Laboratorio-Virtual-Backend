@@ -105,25 +105,26 @@ async function update(body,file,Email){
                 await db.update(table,user, {Email : Email}); 
                 await auth.update(accessUser, {email_User : access.email_User});
             }
-        
-            if(body.First_Name || body.Second_Name || file){
-                if(file){
-                    let item; 
-                    const folderSave = 'profile picture'; 
-                    if(users.Id_Profile== null){ //add
-                        
-                        item = await fileOptions.add(file, folderSave); 
-                    }
-                    else{
-                        item =  await fileOptions.update(file, folderSave, user.Id_Profile); 
-                    } 
-                    user.Profile_Picture= item.url; 
-                    user.Id_Profile= item.public_id; 
-                }else{
-                    console.log("No file")
-                }
-                await db.update(table,user,{Email : Email});
+        }
+        if(body.First_Name || body.Second_Name){
+            await db.update(table,user,{Email : Email});
+        }
+        if(file){
+            let item; 
+            const folderSave = 'profile picture'; 
+            if(users.Id_Profile== null){ //add
+                
+                item = await fileOptions.add(file, folderSave); 
             }
+            else{
+                console.log('Upload------')
+                item =  await fileOptions.update(file, folderSave, user.Id_Profile); 
+            } 
+            user.Profile_Picture= item.url; 
+            user.Id_Profile= item.public_id; 
+            await db.update(table,user,{Email : Email});
+        }else{
+            console.log("No file")
         }
     }
 }
