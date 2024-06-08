@@ -115,7 +115,7 @@ async function update(body,file,Email){
                         item = await fileOptions.add(file, folderSave); 
                     }
                     else{
-                        item =  await fileOptions.update(file, user.Id_Profile); 
+                        item =  await fileOptions.update(file, folderSave, user.Id_Profile); 
                     } 
                     user.Profile_Picture= item.url; 
                     user.Id_Profile= item.public_id; 
