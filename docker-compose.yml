@@ -1,0 +1,20 @@
+version: '3.0'
+
+services:
+  node:
+    container_name: lab-virtual-backend
+    build: .
+    ports:
+      - "${PORT}:3000"
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_DB: ${MYSQL_DB}
+      JET_SECRET: ${JET_SECRET}
+      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
+      ROUNDHOUSE_PROXY: ${ROUNDHOUSE_PROXY}
+

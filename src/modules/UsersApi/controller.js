@@ -27,7 +27,7 @@ async function generate(body){
         const user = {
             Email: body.Email,
         }
-        const validationCode = generateValidationCode();
+        const validationCode = await generateValidationCode();
         validationCache.set(user.Email, validationCode);
         const cachedCode = validationCache.get(user.Email);
         console.log(cachedCode);
@@ -128,6 +128,7 @@ async function update(body,file,Email){
         }
     }
 }
+
 async function sendValidationEmail(email, validateCode) {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
