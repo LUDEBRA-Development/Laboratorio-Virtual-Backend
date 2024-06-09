@@ -6,7 +6,7 @@ function errors(err, req, res, next){
     const status = err.status || 500; 
 
     response.error(req, res, message, status); 
-}
+};
 
 
 module.exports = errors; 

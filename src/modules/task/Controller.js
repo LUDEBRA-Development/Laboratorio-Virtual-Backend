@@ -37,7 +37,10 @@ function add(body){
             throw new Error(); 
         }
     }else{
-        throw new Error(); 
+        throw {
+            status: 401,
+            message: "Unauthorized: You do not have access to this resource."
+        }; 
     }
 
 
@@ -71,6 +74,8 @@ async function update(body, id_task,file){
             await db.update(table, dataTask, { Id_task: task.Id_task });
             if(valiateNote(dataQualification.Qualification)){
                 await Qualification.add(dataQualification);
+            }else{
+
             }
             if (file) {
                 try {
@@ -97,15 +102,24 @@ async function update(body, id_task,file){
                         }
                     }
                 }else{
-                    throw new Error(); 
+                    throw {
+                        status: 400,
+                        message: "Bad Request: The note must be in the range of 0 to 5."
+                    };
                 }
             }
             else {
-                throw new Error(); 
+                throw {
+                    status: 401,
+                    message: "Unauthorized: You do not have access to this resource."
+                };
             }
         }
     } else {
-        throw new Error();
+        throw {
+            status: 401,
+            message: "Unauthorized: You do not have access to this resource."
+        };        
     }
 
 }
