@@ -61,22 +61,23 @@ async function update(body, id_task,file){
                 Name: body.Name || task.Name,
                 Descriptions: body.Descriptions || task.Descriptions,
                 Creation_date: formattedDate,
-                Expiration_date: body.Expiration_date || task.Expiration_date
+                Expiration_date: body.Expiration_date || task.Expiration_date, 
+                Feedback_comments : body.Feedback_comments || task.Feedback_comments || null
             }
             const dataQualification ={
                  Qualification : body.Qualification,
                  email_Users : body.email_Users, 
                  Id_task : task.Id_task
             }
+            await db.update(table, dataTask, { Id_task: task.Id_task });
             if(valiateNote(dataQualification.Qualification)){
-                await db.update(table, dataTask, { Id_task: task.Id_task });
                 await Qualification.add(dataQualification);
-                if (file) {
-                    try {
-                        await saveFile(file, task.Id_task, body.email_User);
-                    } catch (err) {
-                        console.log(err);
-                    }
+            }
+            if (file) {
+                try {
+                    await saveFile(file, task.Id_task, body.email_User);
+                } catch (err) {
+                    console.log(err);
                 }
             }
         } else {
