@@ -56,11 +56,10 @@ async function update(body, id_task,file){
     if (validateUser) {
         if (rolUser === '2') {
             const fechaActual = new Date();
-            const formattedDate = fechaActual.toISOString().slice(0, 19).replace('T', ' ');
             const dataTask = {
                 Name: body.Name || task.Name,
                 Descriptions: body.Descriptions || task.Descriptions,
-                Creation_date: formattedDate,
+                Creation_date: task.Creation_date,
                 Expiration_date: body.Expiration_date || task.Expiration_date, 
                 Feedback_comments : body.Feedback_comments || task.Feedback_comments || null
             }
@@ -88,13 +87,17 @@ async function update(body, id_task,file){
                     Delivery_date: formattedDate,
                     Comment: body.Comment || task.Comment || null
                 }
-                await db.update(table, data, { Id_task: task.Id_task });
-                if (file) {
-                    try {
-                        await saveFile(file, task.Id_task, body.email_User);
-                    } catch (err) {
-                        console.log(err);
+                if(validateDelivaryDate(data.Delivery_date, task.Expiration_date)){
+                    await db.update(table, data, { Id_task: task.Id_task });
+                    if (file) {
+                        try {
+                            await saveFile(file, task.Id_task, body.email_User);
+                        } catch (err) {
+                            console.log(err);
+                        }
                     }
+                }else{
+                    throw new Error(); 
                 }
             }
             else {
@@ -133,6 +136,13 @@ function valiateNote(note) {
     } else {
         return false;
     }
+}
+
+function validateDelivaryDate(Delivery_date, Expiration_date){
+    if(Delivery_date <= Expiration_date){
+        return true
+    }
+    return false
 }
 
 module.exports ={
