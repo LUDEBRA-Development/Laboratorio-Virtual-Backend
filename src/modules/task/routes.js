@@ -41,8 +41,14 @@ routes.post('/', security(),  async (req, res, next)=>{
     }
 })
 routes.post('/:id',security(),async (req, res, next)=>{
+
     try{
-        const items = await controller.update(req.body,req.params.id,req.files.file);
+        let file = null;
+        
+        if (req.files && req.files.file) {
+            file = req.files.file;
+        }
+        const items = await controller.update(req.body,req.params.id,file);
         response.success(req, res, "Item successfully updated", 200);
     }catch(err){
         next(err)
