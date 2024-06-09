@@ -75,7 +75,10 @@ async function update(body, id_task,file){
             if(valiateNote(dataQualification.Qualification)){
                 await Qualification.add(dataQualification);
             }else{
-
+                throw {
+                    status: 400,
+                    message: "Bad Request: The note must be in the range of 0 to 5."
+                };
             }
             if (file) {
                 try {
@@ -103,8 +106,8 @@ async function update(body, id_task,file){
                     }
                 }else{
                     throw {
-                        status: 400,
-                        message: "Bad Request: The note must be in the range of 0 to 5."
+                        status : 403, 
+                        message : "The time has passed to deliver the work."
                     };
                 }
             }
