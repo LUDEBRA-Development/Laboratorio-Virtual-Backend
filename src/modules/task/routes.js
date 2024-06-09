@@ -42,8 +42,8 @@ routes.post('/', security(),  async (req, res, next)=>{
 })
 routes.post('/:id',security(),async (req, res, next)=>{
     try{
-        const items = await controller.update(req.body,req.params.id,req.files.file);
-        response.success(req, res, "Item successfully updated", 200);
+        const items = await controller.remove(req.params.id);
+        response.success(req, res, "Item successfully delete", 200);
     }catch(err){
         next(err)
     }

@@ -1,28 +1,6 @@
 const mysql = require('mysql');
 const config = require('../config');
 
-/* const knex = require('knex')({
-    client: 'mysql',
-    connection: {
-        host: config.mysql.host,
-        port: config.mysql.port,
-        user: config.mysql.user,
-        password: config.mysql.password,
-        database: config.mysql.database
-    }
-});
-
-// Intentar ejecutar una consulta para verificar la conexión
-knex.raw('SELECT 1')
-    .then(() => {
-        console.log('La conexión a la base de datos MySQL fue exitosa.');
-    })
-    .catch((error) => {
-        console.error('Error al conectar a la base de datos MySQL:', error);
-    });
-
- */
-
 const dbconfig = {
     host: config.mysql.host,
     user: config.mysql.user,
@@ -74,35 +52,6 @@ function add(table, data){
     });
 }
  
-function remove(table, data) {
-    return new Promise((resolve, reject) => {
-        // Primero, realizamos una consulta para verificar el estado actual del registro
-        connection.query('SELECT Statu FROM ?? WHERE ?', [table, data], (selectErr, selectResult) => {
-            if (selectErr) {
-                reject(selectErr);
-            } else {
-                if (selectResult.length > 0 && selectResult[0].Statu === '2') {
-                    const error = new Error('This item does not exist');
-                    reject(error);
-                } else {
-                    connection.query('UPDATE ?? SET ? WHERE ?', [table, { Statu: 2 }, data], (updateErr, updateResult) => {
-                        if (updateErr) {
-                            reject(updateErr);
-                        } else {
-                            if (updateResult.affectedRows > 0) {
-                                resolve(updateResult);
-                            } else {
-                                const error = new Error();
-                                reject(error);
-                            }
-                        }
-                    });
-                }
-            }
-        });
-    });
-}
-
 function update(table, data, condition ){
     return new Promise((resolve, reject) => {
         connection.query(`UPDATE ${table} SET ? WHERE ?`,[data,condition], (err, result) => {
@@ -167,7 +116,7 @@ function getById(table, id){
     });
 }
 
-//joins
+
 
 
 function getUserInfo(sql, data){
@@ -209,10 +158,61 @@ function getJoin(query){
     })
 }
 
-/* const = "select  u.Email, u.First_Name, u.Second_Name, c.Name, t.Name as Task , t.Descriptions, t.Id_simulador from Users u join Users_courses uc on uc.Email=u.Email
-join  courses c on uc.Id_course=c.Id_course  join  tasks t on c.Id_course= t.Id_course where c.Statu = '1' and  u.Email = ""; 
+function remove(table, data) {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT Statu FROM ?? WHERE ?', [table, data], (selectErr, selectResult) => {
+            if (selectErr) {
+                reject(selectErr);
+            } else {
+                if (selectResult.length > 0 && selectResult[0].Statu === '2') {
+                    const error = new Error('This item does not exist');
+                    reject(error);
+                } else {
+                    connection.query('UPDATE ?? SET ? WHERE ?', [table, { Statu: 2 }, data], (updateErr, updateResult) => {
+                        if (updateErr) {
+                            reject(updateErr);
+                        } else {
+                            if (updateResult.affectedRows > 0) {
+                                resolve(updateResult);
+                            } else {
+                                const error = new Error();
+                                reject(error);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
+}
 
- */
+
+function deleteItemInDB(table, id){
+    return new Promise((resolve, reject)=>{
+        connection.query(`DELETE FROM ${table} WHERE ?`, [id], (err, result)=>{
+            if (err) {
+                reject(err);
+            } else {
+                if (result.length > 0) {
+                    if(result.length ===1){
+                        resolve(result[0]);
+                    }else{
+                        resolve(result);
+                    }
+                    
+                } else {
+                    const error = new Error();
+                    reject(error);
+                }
+            }
+        });
+    });
+}
+
+
+
+
+
 module.exports = {
     getAll,
     getById,
@@ -223,4 +223,5 @@ module.exports = {
     getUserInfo,
     exist,
     getJoin,
+    deleteItemInDB,
 }

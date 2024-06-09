@@ -60,6 +60,7 @@ async function update(body, id_task,file){
             const dataTask = {
                 Name: body.Name || task.Name,
                 Descriptions: body.Descriptions || task.Descriptions,
+                Creation_date: formattedDate,
                 Expiration_date: body.Expiration_date || task.Expiration_date
             }
             const dataQualification ={
@@ -67,12 +68,15 @@ async function update(body, id_task,file){
                  email_Users : body.email_Users, 
                  Id_task : task.Id_task
             }
-            await db.update(table, dataTask, { Id_task: task.Id_task })
-            if (file) {
-                try {
-                    await saveFile(file, task.Id_task, body.email_User);
-                } catch (err) {
-                    console.log(err);
+            if(valiateNote(dataQualification.Qualification)){
+                await db.update(table, dataTask, { Id_task: task.Id_task });
+                await Qualification.add(dataQualification);
+                if (file) {
+                    try {
+                        await saveFile(file, task.Id_task, body.email_User);
+                    } catch (err) {
+                        console.log(err);
+                    }
                 }
             }
         } else {
@@ -115,9 +119,21 @@ async function saveFile(file, Id_task, email_User){
 }
 
 
-function remove(body){
-    return db.remove(table, {Id_task :body.Id_task});
+async function remove(id){
+    await Qualification.deleteItemInDB(id);
+    await DBfile.deleteItemInDB(id)
+    await db.deleteItemInDB(table, {Id_task :id});
 }
+
+
+function valiateNote(note) {
+    if (note >= 0 && note <= 5) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 module.exports ={
     getAll,
     getByIdTask,

@@ -8,9 +8,9 @@ function getById(id){
     return db.getById(table, id);
 }
 
-/* function remove(body){
-    return db.remove(table, {Id_course :body.Id_course});
-} */
+function deleteItemInDB(id){
+    return db.deleteItemInDB(table, {Id_task :id});
+}
 
 function add(data){
     return db.add(table, data);
@@ -28,6 +28,7 @@ module.exports ={
     getById,
     add, 
     update,
+    deleteItemInDB,
 }
 
 

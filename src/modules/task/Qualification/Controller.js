@@ -14,8 +14,12 @@ async function update(body){
     }
 }
 
+function deleteItemInDB(id){
+    return db.deleteItemInDB(table, {Id_task :id});
+}
 module.exports ={
     update,
+    deleteItemInDB,
 }
 
 
