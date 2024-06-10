@@ -33,11 +33,17 @@ function decodeHeader(req){
     if (!token) {
         return null;
     }
+<<<<<<< HEAD
 
     if(verifyToken(token)){
         return jsonWebToken.decode(token);
     }
 
+=======
+    const verify = verifyToken(token); 
+    const decode = jsonWebToken.decode(token);
+    return decode; 
+>>>>>>> parent of 5d9b283 (qudanna errors)
 }
 
 

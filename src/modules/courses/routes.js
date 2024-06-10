@@ -6,7 +6,7 @@ const security = require('./security')
 
 routes.get('/', async (req, res, next)=>{
     try{
-        const items = await controller.getAll();
+        const [items] = await controller.getAll();
         response.success(req, res, items, 200);
     }catch(err){
         next(err)

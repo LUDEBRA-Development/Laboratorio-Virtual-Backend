@@ -1,7 +1,7 @@
 const db = require ('../../DB/mysql')
 const table = 'courses'
 function getAll(){
-    return  Date.now()
+    return  db.getAll(table);
 }
 
 function getById(id){
