@@ -25,7 +25,7 @@ function getAllTask(Email){
     }
 }
 
-async function getFileTeacher(data){
+async function getFileTeacher(){
     const sql= `
     select  f.email_User,f.Id_task, f.Url_file,ac.rol
     FROM tasks t

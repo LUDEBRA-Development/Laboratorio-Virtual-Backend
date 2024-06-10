@@ -12,7 +12,7 @@ module.exports=  function(){
                 }
             }else{
                 let body = req.body
-                let rolUser = 0;
+                let rolUser
                 if(body.code){
                     try{ 
                         const items =  await  course.getById({Code : body.code}); 
@@ -31,7 +31,7 @@ module.exports=  function(){
                 }else{
                     rolUser = 4;
                 }
-                if(rolUser != 0){           
+                if(rolUser !== 0){
                     req.body = {
                         First_Name: body.First_Name,
                         Second_Name:body.Second_Name ,

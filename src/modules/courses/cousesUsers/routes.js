@@ -25,7 +25,7 @@ routes.get('/:id',  async (req, res, next)=>{
 
 routes.post('/', security(), async (req, res, next)=>{
     try{
-        const items = await controller.add(req.body);
+        await controller.add(req.body);
         response.success(req, res, "item successfully add", 200);
     }catch(err){
         next(err)

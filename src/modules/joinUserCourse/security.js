@@ -16,9 +16,9 @@ module.exports = function () {
                         req.body.rol = userRole;
                         next();
                     } else {
-                        const error = new Error('Unauthorized access');
+                        const error = new Error();
                         error.statusCode = 403;
-                        throw error;
+                        next(error);
                     }
                 }
             } else {

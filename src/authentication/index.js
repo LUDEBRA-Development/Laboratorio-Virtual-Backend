@@ -11,7 +11,7 @@ function verifyToken(token){
 
 const tokenCheck = {
     confirmToken : (req)=>{
-         return  decoded = decodeHeader(req)
+         return decodeHeader(req)
     }
 }
 
@@ -35,8 +35,7 @@ function decodeHeader(req){
     }
 
     if(verifyToken(token)){
-        const decode = jsonWebToken.decode(token);
-        return decode; 
+        return jsonWebToken.decode(token);
     }
 
 }

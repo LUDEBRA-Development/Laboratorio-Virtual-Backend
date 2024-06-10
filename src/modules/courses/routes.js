@@ -33,7 +33,7 @@ routes.put('/',security(), async (req, res, next)=>{
 
 routes.post('/', security(), async (req, res, next)=>{
     try{
-        const items = await controller.add(req.body);
+        await controller.add(req.body);
         response.success(req, res, "item successfully add", 200);
     }catch(err){
         next(err)
@@ -42,7 +42,7 @@ routes.post('/', security(), async (req, res, next)=>{
 
 routes.post('/:id',security(), async (req, res, next)=>{
     try{
-        const items = await controller.update(req.body, req.params.id);
+        await controller.update(req.body, req.params.id);
         response.success(req, res, "Item successfully updated", 200);
     }catch(err){
         next(err)

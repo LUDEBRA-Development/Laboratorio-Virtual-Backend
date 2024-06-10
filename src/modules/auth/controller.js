@@ -1,7 +1,6 @@
 const db = require ('../../DB/mysql')
 const bcrypt = require("bcrypt"); 
 const auth = require('../../authentication/index')
-const authMail = require('../authMail');
 const table = 'access'
 
 
@@ -21,7 +20,6 @@ async function update(data, condition){
     return db.update(table, data, condition);
 }
 async function login(email, password){
-  //  if(authMail.validateMail(email)){ 
     const user = await db.query('Users',{Email : email}); 
     const access = await db.query(table, {email_User : email});
     
@@ -38,14 +36,17 @@ async function login(email, password){
             if(result){
                 return auth.assignToken({...data})
             }
-            throw new Error("Invalid information");
+            throw {
+                status: 401,
+                message: "Invalid information."
+            };
         })
-        .catch(err =>{
-            throw new Error("Invalid information"); 
+        .catch(() =>{
+            throw {
+                status: 401,
+                message: "Invalid information."
+            };
         })
-/*     }else{
-        throw new Error("Invalid information");
-    } */
 }
 
 

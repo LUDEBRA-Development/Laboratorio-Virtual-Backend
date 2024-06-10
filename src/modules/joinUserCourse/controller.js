@@ -1,5 +1,4 @@
-const db = require ('../../DB/Joins'); 
-const files = require ('../../modules/file/Controller'); 
+const db = require ('../../DB/Joins');
 function getCourse(body){
     return db.getCourse(body.Email);
 }
@@ -8,8 +7,7 @@ function getCourse(body){
     const FileTeacher  = await db.getFileTeacher(body);
     const FileStudent  = await db.getFileStudent(body);
     const tasksNoFile = await db.getTasksNoFile(body);
-    let filesByTask = {};
-        const combinedTasks = tasksNoFile.map(taskNoFile => {
+    const combinedTasks = tasksNoFile.map(taskNoFile => {
             const taskWithFiles = {
                 ...taskNoFile,
                 files: []
@@ -50,7 +48,7 @@ function getCourse(body){
             return taskWithFiles;
         })
 
-        return combinedTasks;
+     return combinedTasks;
  }
 
 

@@ -1,4 +1,3 @@
-const nodemon = require('nodemon');
 const db = require ('../../DB/mysql')
 const table = 'courses'
 function getAll(){

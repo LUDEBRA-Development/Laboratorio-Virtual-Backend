@@ -58,7 +58,6 @@ async function update(body, id_task,file){
     const validateUser = await coursesController.query(conditions)
     if (validateUser) {
         if (rolUser === '2') {
-            const fechaActual = new Date();
             const dataTask = {
                 Name: body.Name || task.Name,
                 Descriptions: body.Descriptions || task.Descriptions,
