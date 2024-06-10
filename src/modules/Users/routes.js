@@ -35,7 +35,7 @@ routes.put('/',security(), async (req, res, next)=>{
 
 routes.post('/generate', async (req, res, next)=>{
     try{
-        const items = await controller.generate(req.body);
+        await controller.generate(req.body);
         response.success(req, res, "Operation completed successfully", 200);
     }catch(err){
         next(err)
@@ -43,7 +43,7 @@ routes.post('/generate', async (req, res, next)=>{
 })
 routes.post('/validate',securityAdd(),async (req, res, next)=>{
     try{
-        const items = await controller.add(req.body);
+        await controller.add(req.body);
         response.success(req, res, "Operation completed successfully", 200);
     }catch(err){
         next(err)
@@ -56,7 +56,7 @@ routes.post('/:id',security() ,async (req, res, next)=>{
         if (req.files && req.files.image) {
             image = req.files.image;
         }
-        const items = await controller.update(req.body,image,req.params.id);
+        await controller.update(req.body,image,req.params.id);
         response.success(req, res, "Item successfully updated", 200);
     }catch(err){
         next(err)

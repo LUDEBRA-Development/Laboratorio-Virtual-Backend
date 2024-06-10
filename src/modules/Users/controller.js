@@ -1,7 +1,6 @@
 const db = require ('../../DB/mysql'); 
 const auth = require('../auth/controller');
 const userCourse = require('../courses/cousesUsers/Controller')
-const authMail = require('../authMail'); 
 const nodemailer = require('nodemailer');
 const fileOptions = require ('../../DB/cloudinary/controller')
 const NodeCache = require("node-cache");
@@ -20,14 +19,13 @@ function remove(body){
     return db.remove(table, body);
 }
 
-
 async function generate(body){
     //if(authMail.validateMail(body.Email)){      
         console.log(body.Email)
         const user = {
             Email: body.Email,
         }
-        const validationCode = await generateValidationCode();
+        const validationCode =  generateValidationCode();
         validationCache.set(user.Email, validationCode);
         const cachedCode = validationCache.get(user.Email);
         console.log(cachedCode);
