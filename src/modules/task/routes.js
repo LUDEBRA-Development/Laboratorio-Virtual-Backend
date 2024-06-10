@@ -34,7 +34,7 @@ routes.get('/course/:id',  async (req, res, next)=>{
 
 routes.post('/', security(),  async (req, res, next)=>{
     try{
-        const items = await controller.add(req.body);
+        await controller.add(req.body);
         response.success(req, res, "item successfully add", 200);
     }catch(err){
         next(err)
@@ -48,7 +48,7 @@ routes.post('/:id',security(),async (req, res, next)=>{
         if (req.files && req.files.file) {
             file = req.files.file;
         }
-        const items = await controller.update(req.body,req.params.id,file);
+        await controller.update(req.body,req.params.id,file);
         response.success(req, res, "Item successfully updated", 200);
     }catch(err){
         next(err)
@@ -57,7 +57,7 @@ routes.post('/:id',security(),async (req, res, next)=>{
 
 routes.put('/:id',security(),async (req, res, next)=>{
     try{
-        const items = await controller.remove(req.params.id);
+        await controller.remove(req.params.id);
         response.success(req, res, "Item successfully delete", 200);
     }catch(err){
         next(err)

@@ -4,7 +4,7 @@ const fs = require('fs');
 
 
 const serverFile= 'https://file-cloud-1lcm.onrender.com/upload'
-const serverFilelocal = 'http://localhost:8080/upload';
+// const serverFilelocal = 'http://localhost:8080/upload';
 
 async function getAll(){
     try {

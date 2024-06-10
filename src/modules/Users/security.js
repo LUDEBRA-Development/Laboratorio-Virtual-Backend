@@ -21,7 +21,7 @@ module.exports= function(){
                         }
 
 
-                    }else{
+                    } else {
                         const error = new Error('Unauthorized access');
                         error.statusCode = 403; 
                         throw error;

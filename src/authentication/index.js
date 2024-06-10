@@ -33,9 +33,12 @@ function decodeHeader(req){
     if (!token) {
         return null;
     }
-    const verify = verifyToken(token); 
-    const decode = jsonWebToken.decode(token);
-    return decode; 
+
+    if(verifyToken(token)){
+        const decode = jsonWebToken.decode(token);
+        return decode; 
+    }
+
 }
 
 
