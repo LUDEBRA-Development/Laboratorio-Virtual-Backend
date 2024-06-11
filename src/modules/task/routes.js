@@ -64,4 +64,4 @@ routes.put('/:id',security(),async (req, res, next)=>{
     }
 });
 
-module.exports =routes; 
+module.exports = routes;

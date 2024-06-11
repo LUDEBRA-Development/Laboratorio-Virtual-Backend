@@ -41,6 +41,7 @@ routes.post('/generate', async (req, res, next)=>{
         next(err)
     }
 })
+
 routes.post('/validate',securityAdd(),async (req, res, next)=>{
     try{
         await controller.add(req.body);
@@ -49,6 +50,7 @@ routes.post('/validate',securityAdd(),async (req, res, next)=>{
         next(err)
     }
 })
+
 routes.post('/:id',security() ,async (req, res, next)=>{
     try{
         let image = null;

@@ -9,6 +9,7 @@ routes.post('/',async (req, res, next)=>{
         await controller.update(req.body);
         response.success(req, res, "Item successfully updated", 200);
     }catch(err){
+        console.log(err)
         next(err)
     }
 })

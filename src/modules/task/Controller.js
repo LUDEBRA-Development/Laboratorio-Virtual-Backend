@@ -3,7 +3,7 @@ const dbJoin = require ('../../DB/Joins')
 const fileController = require('../file/Controller')
 const coursesController = require ('../courses/cousesUsers/Controller')
 const DBfile = require('../../DB/cloudFile/controller')
-const Qualification = require('./Qualification/Controller')
+const Qualification = require('./qualification/routes')
 const table = 'tasks';
 
 

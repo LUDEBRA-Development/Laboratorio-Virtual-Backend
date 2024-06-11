@@ -5,6 +5,7 @@ const expirationTime = 3600
 function assignToken(data){
     return jsonWebToken.sign(data,secret,{ expiresIn: expirationTime });
 }
+
 function verifyToken(token){
     return jsonWebToken.verify(token,secret);
 }

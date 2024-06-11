@@ -19,6 +19,7 @@ async function update(data, condition){
     }
     return db.update(table, data, condition);
 }
+
 async function login(email, password){
     try {
         const user = await db.query('Users',{Email : email});
