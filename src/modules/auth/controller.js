@@ -20,33 +20,37 @@ async function update(data, condition){
     return db.update(table, data, condition);
 }
 async function login(email, password){
-    const user = await db.query('Users',{Email : email}); 
-    const access = await db.query(table, {email_User : email});
-    
-    const data = {
-        First_Name: user.First_Name,
-        Last_Name : user.Second_Name, 
-        email_User: user.Email,
-        Imagen : user.Profile_Picture,
-        rol : access.rol
-    }
+    try {
+        const user = await db.query('Users',{Email : email});
+        const access = await db.query(table, {email_User : email});
 
-    return bcrypt.compare(password, access.password)
-        .then(result =>{
-            if(result){
-                return auth.assignToken({...data})
-            }
-            throw {
-                status: 401,
-                message: "Invalid information."
-            };
-        })
-        .catch(() =>{
-            throw {
-                status: 401,
-                message: "Invalid information."
-            };
-        })
+        const data = {
+            First_Name: user.First_Name,
+            Last_Name : user.Second_Name,
+            email_User: user.Email,
+            Imagen : user.Profile_Picture,
+            rol : access.rol
+        }
+
+        return bcrypt.compare(password, access.password)
+            .then(result => {
+                if (result) {
+                    return auth.assignToken({...data})
+                }
+                throw {
+                    status: 401,
+                    message: "Invalid information."
+                };
+            })
+            .catch(() => {
+                throw {
+                    status: 401,
+                    message: "Invalid information."
+                };
+            })
+    }catch(err){
+        throw  err;
+    }
 }
 
 

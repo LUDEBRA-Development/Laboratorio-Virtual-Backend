@@ -8,6 +8,7 @@ routes.post('/login', async function (req, res, next) {
         const  token = await controller.login(req.body.Email, req.body.Password);
         response.success(req, res, token, 200);
     } catch (err) {
+        //response.error(req, res, err, 500);
         next(err)
     }
 })

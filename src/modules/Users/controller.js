@@ -15,8 +15,9 @@ function getById(id){
     return db.getById(table, {Email : id});
 }
 
-function remove(body){
-    return db.remove(table, body);
+function remove(Email){
+    const tableAccess = 'access';
+    return db.remove(tableAccess, {email_User : Email});
 }
 
 async function generate(body){

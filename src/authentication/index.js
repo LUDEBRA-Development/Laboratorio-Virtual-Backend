@@ -1,9 +1,9 @@
 const jsonWebToken = require("jsonwebtoken");
 config = require('../config')
 const secret = config.jwt.secret; 
-const expirationtime = 3600
+const expirationTime = 3600
 function assignToken(data){
-    return jsonWebToken.sign(data,secret,{ expiresIn: expirationtime }); 
+    return jsonWebToken.sign(data,secret,{ expiresIn: expirationTime });
 }
 function verifyToken(token){
     return jsonWebToken.verify(token,secret);
@@ -21,10 +21,8 @@ function getToken(authorization){
     }
     if(authorization.indexOf('Bearer')=== -1 ){
         throw new Error('Formato invalido');
-    }  
-
-    let token = authorization.replace('Bearer ', '')
-    return token;
+    }
+    return  authorization.replace('Bearer ', '') //return token
 }
 
 function decodeHeader(req){
@@ -38,9 +36,6 @@ function decodeHeader(req){
     }
     return null;
 }
-
-
-
 module.exports = {
     assignToken,
     tokenCheck,

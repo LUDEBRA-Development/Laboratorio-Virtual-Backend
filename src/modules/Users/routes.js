@@ -23,9 +23,9 @@ routes.get('/:id',security() , async (req, res, next)=>{
     }
 })
 
-routes.put('/',security(), async (req, res, next)=>{
+routes.put('/:id',security(), async (req, res, next)=>{
     try{
-        await controller.remove(req.body);
+        await controller.remove(req.params.id);
         response.success(req, res, "item successfully removed", 200);
     }catch(err){
         next(err)
