@@ -6,7 +6,7 @@ const security = require('./security');
 
 routes.post('/',security(),async (req, res, next)=>{
     try{
-        const items = await controller.update(req.body,req.params.id);
+        await controller.update(req.body);
         response.success(req, res, "Item successfully updated", 200);
     }catch(err){
         next(err)

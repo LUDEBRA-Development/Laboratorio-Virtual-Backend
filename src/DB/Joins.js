@@ -1,5 +1,8 @@
 const db = require('./mysql'); 
 
+
+
+
 function getCourse(Email){
     const sql = `
         SELECT c.Name,  c.Id_course

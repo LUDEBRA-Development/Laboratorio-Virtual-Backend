@@ -1,12 +1,14 @@
-const db = require ('../../DB/Joins');
+const dbJoin = require ('../../DB/Joins');
+const db = require ('../../DB/mysql');
+const table = 'Users_courses'
 function getCourse(body){
-    return db.getCourse(body.Email);
+    return dbJoin.getCourse(body.Email);
 }
 
  async function getTasks(body){
-    const FileTeacher  = await db.getFileTeacher(body);
-    const FileStudent  = await db.getFileStudent(body);
-    const tasksNoFile = await db.getTasksNoFile(body);
+    const FileTeacher  = await dbJoin.getFileTeacher(body);
+    const FileStudent  = await dbJoin.getFileStudent(body);
+    const tasksNoFile = await dbJoin.getTasksNoFile(body);
     const combinedTasks = tasksNoFile.map(taskNoFile => {
             const taskWithFiles = {
                 ...taskNoFile,
@@ -51,37 +53,11 @@ function getCourse(body){
      return combinedTasks;
  }
 
-
-       /*  tasks.forEach(task => {
-            const taskId = task.Id_task;
-        
-            if (!filesByTask[taskId]) {
-                filesByTask[taskId] = { ...task, files: [] };
-            }
-            filesByTask[taskId].files.push({
-                email_User: task.email_User,
-                Id_file: task.Id_file,
-                Url_file: task.Url_file,
-                rol: task.rol
-            });
-        }); 
-
-        tasksNoFile.forEach(task => {
-            const taskId = task.Id_task;
-            if (!filesByTask[taskId]) {
-                filesByTask[taskId] = { ...task, files: [] };
-            }
-        });
-        const modifiedItems = Object.values(filesByTask);
-        modifiedItems.forEach(item => {
-            delete item.email_User;
-            delete item.Id_file;
-            delete item.Url_file;
-            delete item.rol;
-        }); */
-
-
+ function getUserCourse(body){
+    return db.getById(table, {Id_course : body.Id_course});
+ }
 module.exports ={
     getCourse,
     getTasks,
+    getUserCourse,
 }

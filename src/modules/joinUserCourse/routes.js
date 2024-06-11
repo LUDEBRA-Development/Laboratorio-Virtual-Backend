@@ -13,6 +13,17 @@ routes.get('/courses',security(),  async (req, res, next)=>{
         next(err)
     }
 })
+
+//get user in course
+routes.get('/courses',security(),  async (req, res, next)=>{
+    try{
+        const items = await controller.getUserCourse(req.body);
+        response.success(req, res, items, 200);
+    }catch(err){
+        next(err)
+    }
+})
+
 //get task
 routes.post('/tasks', security(), async (req, res, next)=>{
     try{
