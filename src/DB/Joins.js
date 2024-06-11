@@ -38,7 +38,11 @@ async function getFileTeacher(){
     `;
 
     try{
-        return db.getJoin(sql);
+        const item = await db.getJoin(sql);
+        if(item){
+            return item;
+        }
+        return null;
     }catch(err){
         console.log(err);
         return null;
@@ -55,7 +59,11 @@ async function getFileStudent(data){
     `;
 
     try{
-        return await db.getUserInfo(sql, data.Email);
+        const item = await db.getUserInfo(sql, data.Email);
+        if(item){
+            return item;
+        }
+        return null;
     }catch(err){
         console.log(err);
         return null;

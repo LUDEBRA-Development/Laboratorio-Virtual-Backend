@@ -15,7 +15,7 @@ routes.get('/courses',security(),  async (req, res, next)=>{
 })
 
 //get user in course
-routes.get('/courses',security(),  async (req, res, next)=>{
+routes.get('/Incourses',security(),  async (req, res, next)=>{
     try{
         const items = await controller.getUserCourse(req.body);
         response.success(req, res, items, 200);

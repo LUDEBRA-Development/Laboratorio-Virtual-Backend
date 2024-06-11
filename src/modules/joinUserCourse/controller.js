@@ -5,53 +5,64 @@ function getCourse(body){
     return dbJoin.getCourse(body.Email);
 }
 
- async function getTasks(body){
-    const FileTeacher  = await dbJoin.getFileTeacher(body);
-    const FileStudent  = await dbJoin.getFileStudent(body);
+async function getTasks(body) {
+    const FileTeacher = await dbJoin.getFileTeacher(body);
+    const FileStudent = await dbJoin.getFileStudent(body);
     const tasksNoFile = await dbJoin.getTasksNoFile(body);
+
     const combinedTasks = tasksNoFile.map(taskNoFile => {
-            const taskWithFiles = {
-                ...taskNoFile,
-                files: []
-            };
+        const taskWithFiles = {
+            ...taskNoFile,
+            files: []
+        };
+
+        if (FileTeacher && Array.isArray(FileTeacher)) {
             FileTeacher.forEach(task => {
                 if (task.Id_task === taskNoFile.Id_task) {
                     taskWithFiles.files.push({
                         email_User: task.email_User,
-                        Id_task : task.Id_task,
+                        Id_task: task.Id_task,
                         Url_file: task.Url_file,
                         rol: task.rol,
                     });
                 }
             });
-            if(body.rol ==='2'){
+        }
+
+        if (body.rol === '2') {
+            if (FileStudent && Array.isArray(FileStudent)) {
                 FileStudent.forEach(task => {
-                    if (task.Id_task === taskNoFile.Id_task ) {
+                    if (task.Id_task === taskNoFile.Id_task) {
                         taskWithFiles.files.push({
                             email_User: task.email_User,
-                            Id_task : task.Id_task,
-                            Url_file: task.Url_file,
-                            rol: task.rol,
-                        });
-                    }
-                });
-            }else{
-                FileStudent.forEach(task => {
-                    if (task.Id_task === taskNoFile.Id_task  && task.email_User === body.Email) {
-                        taskWithFiles.files.push({
-                            email_User: task.email_User,
-                            Id_task : task.Id_task,
+                            Id_task: task.Id_task,
                             Url_file: task.Url_file,
                             rol: task.rol,
                         });
                     }
                 });
             }
-            return taskWithFiles;
-        })
+        } else {
+            if (FileStudent && Array.isArray(FileStudent)) {
+                FileStudent.forEach(task => {
+                    if (task.Id_task === taskNoFile.Id_task && task.email_User === body.Email) {
+                        taskWithFiles.files.push({
+                            email_User: task.email_User,
+                            Id_task: task.Id_task,
+                            Url_file: task.Url_file,
+                            rol: task.rol,
+                        });
+                    }
+                });
+            }
+        }
 
-     return combinedTasks;
- }
+        return taskWithFiles;
+    });
+
+    return combinedTasks;
+}
+
 
  function getUserCourse(body){
     return db.getById(table, {Id_course : body.Id_course});
