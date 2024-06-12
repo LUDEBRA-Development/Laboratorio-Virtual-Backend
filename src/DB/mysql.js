@@ -188,7 +188,7 @@ function remove(table, data) {
 }
 
 
-function deleteItemInDB(table, id){
+function removeDB(table, id){
     return new Promise((resolve, reject)=>{
         connection.query(`DELETE FROM ${table} WHERE ?`, [id], (err, result)=>{
             if (err) {
@@ -200,7 +200,7 @@ function deleteItemInDB(table, id){
                     }else{
                         resolve(result);
                     }
-                    
+
                 } else {
                     const error = new Error();
                     reject(error);
@@ -224,5 +224,5 @@ module.exports = {
     getUserInfo,
     exist,
     getJoin,
-    deleteItemInDB,
+    removeDB,
 }

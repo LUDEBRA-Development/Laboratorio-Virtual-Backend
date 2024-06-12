@@ -25,7 +25,6 @@ routes.get('/:id',  async (req, res, next)=>{
 routes.get('/course/:id',  async (req, res, next)=>{
     try{
         const items = await controller.getByIdCourse(req.params.id);
-        console.log(items);
         response.success(req, res, items, 200);
     }catch(err){
         next(err)

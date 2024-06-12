@@ -8,8 +8,8 @@ function getById(id){
     return db.getById(table, id);
 }
 
-function deleteItemInDB(id){
-    return db.deleteItemInDB(table, {Id_task :id});
+function removeDB(id){
+    return db.removeDB(table, {Id_task :id});
 }
 
 function add(data){
@@ -18,10 +18,10 @@ function add(data){
 
 
 module.exports ={
+    removeDB,
     getAll,
     getById,
     add,
-    deleteItemInDB,
 }
 
 

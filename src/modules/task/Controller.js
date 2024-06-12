@@ -3,7 +3,7 @@ const dbJoin = require ('../../DB/Joins')
 const fileController = require('../file/Controller')
 const coursesController = require ('../courses/cousesUsers/Controller')
 const DBfile = require('../../DB/cloudFile/controller')
-const Qualification = require('./qualification/routes')
+const Qualification = require('./qualification/Controller')
 const table = 'tasks';
 
 
@@ -14,9 +14,29 @@ function getAll(body){
 function getByIdTask(id){
     return db.getById(table, {Id_task : id});
 }
-function getByIdCourse(id){
-    return db.getById(table, {Id_course : id});
+
+async function getByIdCourse(id){
+    try {
+        const items = await db.getById(table, {Id_course : id});
+        const itemsArray = Array.isArray(items) ? items : [items];
+        if (itemsArray.length === 0) {
+            throw {
+                status: 404,
+                message: "No tasks available for this course."
+            };
+        } else {
+            return itemsArray
+        }
+    }catch(err){
+        throw {
+            status: 404,
+            message: "No tasks available for this course."
+        };
+    }
+
 }
+
+
 function add(body){
     const rolUser = body.rol; 
     if(rolUser==='2'){
@@ -42,9 +62,6 @@ function add(body){
             message: "Unauthorized: You do not have access to this resource."
         }; 
     }
-
-
-
 }
 
 async function update(body, id_task,file){
@@ -111,6 +128,8 @@ async function update(body, id_task,file){
     }
 
 }
+
+
 async function saveFile(file, Id_task, email_User){
     const cloudFile =  await DBfile.add(file)
     if(cloudFile){
@@ -127,8 +146,8 @@ async function saveFile(file, Id_task, email_User){
 
 async function remove(id){
     await Qualification.deleteItemInDB(id);
-    await DBfile.deleteItemInDB(id)
-    await db.deleteItemInDB(table, {Id_task :id});
+    await DBfile.removeDB(id)
+    await db.removeDB(table, {Id_task :id});
 }
 
 
