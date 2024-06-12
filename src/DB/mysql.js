@@ -52,9 +52,13 @@ function add(table, data){
     });
 }
  
-function update(table, data, condition ){
+function update(table, data, conditions ){
     return new Promise((resolve, reject) => {
-        connection.query(`UPDATE ${table} SET ? WHERE ?`,[data,condition], (err, result) => {
+        const conditionKeys = Object.keys(conditions);
+        const conditionValues = conditionKeys.map(key => conditions[key]);
+        const conditionString = conditionKeys.map(key => `${key} = ?`).join(' AND ');
+
+        connection.query(`UPDATE ${table} SET ? WHERE ${conditionString}`, [data, ...conditionValues], (err, result) => {
             if (err) {
                 reject(err);
             } else {
@@ -137,19 +141,25 @@ function getUserInfo(sql, data){
     });
 }
 
-async function exist(table, condition) {
+async function exist(table, conditions) {
     return new Promise((resolve, reject) => {
-        const query = `SELECT COUNT(*) AS count FROM ${table} WHERE ${condition}`;
-        connection.query(query, (err, result) => {
+        const conditionKeys = Object.keys(conditions);
+        const conditionString = conditionKeys.map(key => `${key} = ?`).join(' AND ');
+
+        const query = `SELECT COUNT(*) AS count FROM ${table} WHERE ${conditionString}`;
+        const conditionValues = conditionKeys.map(key => conditions[key]);
+
+        connection.query(query, conditionValues, (err, result) => {
             if (err) {
-                reject(err); // Rechazar la promesa con el error
+                reject(err);
             } else {
                 const count = result[0].count;
-                resolve(count > 0); // Resolver la promesa con true si el conteo es mayor que cero, indicando que existe al menos un registro que cumple con la condición
+                resolve(count > 0);
             }
         });
     });
 }
+
 
 function getJoin(query){
     return new Promise((resolve, reject)=>{

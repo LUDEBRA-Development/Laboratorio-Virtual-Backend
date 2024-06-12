@@ -23,15 +23,20 @@ function update(body, id){
     }
     return db.update(table,courseUser,{Email : id})
 }
-function query(id){
-    return db.query(table, id);
+function query(condition){
+    return db.query(table, condition);
+}
+
+function exist(condition){
+    return db.exist(table, condition);
 }
 module.exports ={
     getAll,
     getById,
     add, 
     update,
-    query, 
+    query,
+    exist,
 }
 
 
