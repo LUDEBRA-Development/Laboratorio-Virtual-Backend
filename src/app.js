@@ -21,9 +21,9 @@ app.use(express.json());
 app.use(express.urlencoded({extended : true})); 
 app.use(fileUpload({useTempFiles: true,}));
 const corsOptions = {
-    origin : ['http://localhost:5173/fetch', ]
+    origin : ['https://branica.com/fetch', ]
 }
-app.use(cors())
+app.use(cors(corsOptions))
 
 app.set('port', config.app.port);
 
