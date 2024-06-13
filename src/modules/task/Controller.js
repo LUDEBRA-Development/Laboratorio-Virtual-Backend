@@ -68,7 +68,7 @@ function add(body){
 async function update(body, id_task, file) {
     try {
         const { rol, email_User, Name, Descriptions, Expiration_date } = body;
-        let task = await getByIdTask(id_task);
+l
 
         const conditions = {
             Id_course: task.Id_course,

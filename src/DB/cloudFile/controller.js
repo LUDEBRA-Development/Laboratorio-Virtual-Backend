@@ -3,7 +3,7 @@ const FormData = require('form-data');
 const fs = require('fs');
 
 
-const serverFile= 'https://file-cloud-1lcm.onrender.com/upload'
+const serverFile= 'http://10.0.0.12:3000/upload'
 const serverFilelocal = 'http://localhost:8080/upload';
 
 async function getAll(){
@@ -19,10 +19,7 @@ async function add(file) {
     try {
         const formData = new FormData();
         const fileContent = fs.createReadStream(file.tempFilePath); // Lee el contenido del archivo
-
-
-        formData.append('file', fileContent, { filename: file.name }); 
-
+        formData.append('file', fileContent, { filename: file.name });
         const response = await axios.post(serverFile, formData, {
             headers: {
                 ...formData.getHeaders(),
