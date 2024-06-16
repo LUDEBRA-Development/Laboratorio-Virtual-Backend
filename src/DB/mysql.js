@@ -51,21 +51,28 @@ function add(table, data){
         });
     });
 }
- 
-function update(table, data, conditions ){
+
+function update(table, data, conditions) {
     return new Promise((resolve, reject) => {
+        const dataKeys = Object.keys(data);
+        const dataValues = dataKeys.map(key => data[key]);
+        const dataString = dataKeys.map(key => `${key} = ?`).join(', ');
+
         const conditionKeys = Object.keys(conditions);
         const conditionValues = conditionKeys.map(key => conditions[key]);
         const conditionString = conditionKeys.map(key => `${key} = ?`).join(' AND ');
 
-        connection.query(`UPDATE ${table} SET ? WHERE ${conditionString}`, [data, ...conditionValues], (err, result) => {
+        const query = `UPDATE ${table} SET ${dataString} WHERE ${conditionString}`;
+        const values = [...dataValues, ...conditionValues];
+
+        connection.query(query, values, (err, result) => {
             if (err) {
                 reject(err);
             } else {
                 if (result.affectedRows > 0) {
                     resolve(result);
                 } else {
-                    const error = new Error();
+                    const error = new Error('No se afectaron filas');
                     reject(error);
                 }
             }

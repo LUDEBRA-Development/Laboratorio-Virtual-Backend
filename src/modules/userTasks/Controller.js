@@ -38,7 +38,7 @@ async function update(body, Email){
                 };
             }
         }
-
+        console.log(data);
         if (exist) {
             await db.update(table, data, condition);
         } else {
