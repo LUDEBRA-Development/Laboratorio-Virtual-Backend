@@ -1,7 +1,7 @@
 const db = require ('../../DB/mysql');
 const table = 'User_tasks';
 const taskController =  require('../task/Controller');
-const {getByIdTask} = require("../task/Controller");
+
 async function update(body, Email){
     try {
         const currentDate = new Date();
@@ -54,6 +54,12 @@ function removeDB(id){
     return db.removeDB(table, {Id_task :id});
 }
 
+function getByIdTask(body){
+
+    return db.query(table, body);
+
+}
+
 function validateNote(note) {
     return note >= 0 && note <= 5;
 }
@@ -66,6 +72,7 @@ function validateDelivaryDate(Delivery_date, Expiration_date){
 module.exports ={
     update,
     removeDB,
+    getByIdTask,
 }
 
 

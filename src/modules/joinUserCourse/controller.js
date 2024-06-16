@@ -1,4 +1,5 @@
 const dbJoin = require ('../../DB/Joins');
+const userTask = require('../userTasks/Controller')
 const db = require ('../../DB/mysql');
 const table = 'Users_courses'
 function getCourse(body){
@@ -9,8 +10,16 @@ async function getTasks(body) {
     const FileTeacher = await dbJoin.getFileTeacher(body);
     const FileStudent = await dbJoin.getFileStudent(body);
     const tasksNoFile = await dbJoin.getTasksNoFile(body);
+    const userTaks = await userTask.getByIdTask({email_Users : body.Email});
 
     const combinedTasks = tasksNoFile.map(taskNoFile => {
+
+        let taskToUpdate = tasksNoFile.find(task => task.Id_task === userTaks.Id_task);
+
+        if (taskToUpdate) {
+            Object.assign(taskToUpdate, userTaks);
+        }
+
         const taskWithFiles = {
             ...taskNoFile,
             files: []
