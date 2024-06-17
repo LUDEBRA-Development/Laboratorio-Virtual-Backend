@@ -4,7 +4,7 @@ module.exports= function(){
         const decoded = auth.tokenCheck.confirmToken(req); 
         if(decoded){
             const userRole = decoded.rol;
-            if(userRole ==='1' || userRole==='2'){
+            if(userRole ==='1' || userRole==='2' || userRole==='3'){
                 req.body.rol = userRole;
                 next()
             }else{
