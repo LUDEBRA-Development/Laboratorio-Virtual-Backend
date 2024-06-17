@@ -55,13 +55,15 @@ function removeDB(id){
 }
 
 function getByIdTask(body){
-
     return db.query(table, body);
-
 }
 
 function validateNote(note) {
     return note >= 0 && note <= 5;
+}
+
+function getAll(){
+   return  db.getAll(table);
 }
 
 
@@ -73,6 +75,7 @@ module.exports ={
     update,
     removeDB,
     getByIdTask,
+    getAll,
 }
 
 

@@ -22,8 +22,8 @@ async function update(data, condition){
 
 async function login(email, password){
     try {
-        const user = await db.query('Users',{Email : email});
-        const access = await db.query(table, {email_User : email});
+        const user = await db.getById('Users',{Email : email});
+        const access = await db.getById(table, {email_User : email});
 
         const data = {
             First_Name: user.First_Name,

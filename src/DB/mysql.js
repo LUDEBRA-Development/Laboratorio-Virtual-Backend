@@ -91,7 +91,7 @@ function query(table, conditions){
                 reject(err);
             } else {
                 if (result.length > 0) {
-                    resolve(result[0]);
+                    resolve(result);
                 } else {
                     const error = new Error();
                     reject(error);

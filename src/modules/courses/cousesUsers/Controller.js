@@ -23,6 +23,7 @@ function update(body, id){
     }
     return db.update(table,courseUser,{Email : id})
 }
+
 function query(condition){
     return db.query(table, condition);
 }
