@@ -3,7 +3,7 @@ const FormData = require('form-data');
 const fs = require('fs');
 
 
-const serverFile= 'http://10.0.0.12:3000/upload'
+const serverFile= 'https://file-cloud-1lcm.onrender.com/upload'
 const serverFilelocal = 'http://localhost:8080/upload';
 
 async function getAll(){
