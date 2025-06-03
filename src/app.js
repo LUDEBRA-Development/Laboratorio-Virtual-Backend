@@ -21,14 +21,11 @@ app.use(express.json());
 app.use(express.urlencoded({extended : true})); 
 app.use(fileUpload({useTempFiles: true,}));
 const corsOptions = {
-    origin: function (origin, callback) {
-        if (origin === 'https://branica.com/fetch') {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    }
+    origin: '*', // Permite cualquier origen
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos HTTP permitidos
+    credentials: true, // Permite enviar cookies y encabezados autorizados (opcional)
 };
+
 app.use(cors())
 
 app.set('port', config.app.port);
